@@ -2,8 +2,6 @@ package assignments.assignment1;
 
 import java.util.Scanner;
 
-import javax.sound.midi.Soundbank;
-
 public class OrderGenerator {
     String namaString;
     private static final Scanner input = new Scanner(System.in);
@@ -141,35 +139,34 @@ public class OrderGenerator {
             System.out.println("--------------------------------------------");
             // input pilihan menu
             System.out.print("Pilihan menu: ");
-            // int getSelectMenu = 2;
             int getSelectMenu = input.nextInt(); 
             input.nextLine();
             
             if (getSelectMenu == 1){
+                System.out.println();
                 while (true) {
-                System.out.print("Nama Restoran: ");
-                String namaRestoran = input.nextLine();
-                if (getNamaRestoran(namaRestoran) == "Err") {
-                    System.out.println();
-                    continue; 
+                    System.out.print("Nama Restoran: ");
+                    String namaRestoran = input.nextLine();
+                    if (getNamaRestoran(namaRestoran) == "Err") {
+                        System.out.println();
+                        continue; 
                 }
-                System.out.print("Tanggal Pemesanan: ");
-                String tanggalOrder = input.nextLine();
-                if (getTanggalOrder(tanggalOrder) == "Err") {
-                    System.out.println();
-                    continue;
+                    System.out.print("Tanggal Pemesanan: ");
+                    String tanggalOrder = input.nextLine();
+                    if (getTanggalOrder(tanggalOrder) == "Err") {
+                        System.out.println();
+                        continue;
                 }
-                System.out.print("No. Telpon: ");
-                String noTelepon = input.nextLine();
-                if (getNoTelepon(noTelepon) == "Err") {
-                    System.out.println();
-                    continue; 
+                    System.out.print("No. Telpon: ");
+                    String noTelepon = input.nextLine();
+                    if (getNoTelepon(noTelepon) == "Err") {
+                        System.out.println();
+                        continue; 
                 }
-                // print jika semua input valid
-                System.out.println("Orded ID " + generateOrderID(namaRestoran, tanggalOrder, noTelepon) + " diterima!");
-                System.out.println("--------------------------------------------");
-                OrderGenerator.repeatingShowMenu();
-                break;
+                    // print jika semua input valid
+                    System.out.println("Orded ID " + generateOrderID(namaRestoran, tanggalOrder, noTelepon) + " diterima!");
+                    OrderGenerator.repeatingShowMenu();
+                    break;
                 }
             }
             else if (getSelectMenu == 3){
@@ -210,6 +207,11 @@ public class OrderGenerator {
 
     public static String getTanggalOrder(String argTanggalOrder){
         // wrapping tanggalOrder
+        if (argTanggalOrder.charAt(2) != '/' || argTanggalOrder.charAt(5) != '/') {
+            System.out.println("Tanggal Pemesanan dalam format DD/MM/YYYY!");
+            return "Err";
+            
+        }
         String tanggalOrder = argTanggalOrder.replaceAll("/", "");
         if (tanggalOrder.length() != 8){
             System.out.println("Tanggal Pemesanan dalam format DD/MM/YYYY!");
