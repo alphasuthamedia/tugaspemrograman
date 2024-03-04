@@ -117,6 +117,8 @@ public class OrderGenerator {
         hargaPengiriman = "40000";
     } else if (lokasi.equals("B")) {
         hargaPengiriman = "60000";
+    } else if (lokasi.equals("P")) {
+        hargaPengiriman = "10000";
     } else {
         System.out.println("Harap masukkan lokasi pengiriman yang ada pada jangkauan!");
         System.out.println();
