@@ -66,7 +66,6 @@ public class OrderGenerator {
     
     public static String generateBill(String OrderID, String lokasi){
         lokasi = lokasi.toUpperCase();
-        System.out.println(lokasi);
         String hargaPengiriman = "0";
         // CEK APAKAH FORMAT ORDERID VALID
 
@@ -181,42 +180,16 @@ public class OrderGenerator {
                     System.out.print("Order ID : ");
                     String getUserID = input.nextLine();
                     String getBillValid = OrderGenerator.generateBill(getUserID, "s");
-                    System.out.println(getBillValid);
-                    // if (getBillValid != "Err") {
-                    //     System.out.println(getBillValid);
-                    //     System.out.print("Lokasi Pengiriman: ");
-                    //     String getLokasiPengiriman = input.nextLine();
-                    //     getLokasiPengiriman = getLokasiPengiriman.toUpperCase();
-                    //     if (getLokasiPengiriman.equals("U")) {
-                    //         String hargaPengiriman = 20000 + "";
-                    //         System.out.println();
-
-                    //         OrderGenerator.repeatingShowMenu();
-                    //         break;
-                    //     } else if (getLokasiPengiriman.equals("T")) {
-                    //         String hargaPengiriman = 35000 + "";
-                    //         System.out.println();
-
-                    //         OrderGenerator.repeatingShowMenu();
-                    //         break;
-                    //     } else if (getLokasiPengiriman.equals("S")) {
-                    //         String hargaPengiriman = 40000 + "";
-                    //         System.out.println();
-
-                    //         OrderGenerator.repeatingShowMenu();
-                    //         break;
-                    //     } else if (getLokasiPengiriman.equals("B")) {
-                    //         String hargaPengiriman = 60000 + "";
-                    //         System.out.println();
-
-                    //         OrderGenerator.repeatingShowMenu();
-                    //         break;
-                    //     }
-                    //     else {
-                    //     System.out.println("Harap masukkan lokasi pengiriman yang ada pada jangkauan!");
-                    //     System.out.println();
-                    //         }
-                    //     }
+                    if (getBillValid != "Err"){
+                        System.out.print("Lokasi Pengiriman: ");
+                        String getLokasiPengiriman = input.nextLine();
+                        System.out.println();
+                        // cek apakah lokasinya tersedia
+                        if (OrderGenerator.generateBill(getUserID, getLokasiPengiriman) != "Err") {
+                            System.out.println(OrderGenerator.generateBill(getUserID, getLokasiPengiriman)); // Print output
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -321,8 +294,4 @@ public class OrderGenerator {
         }
         return resultEvenCheckSum + resultOddCheckSum;
     }
-
-    // public static String printTotalBill(String argOrderID, String argtTanggalOrder, String argLokasiPengiriman, String argBiayaPengiriman){
-        
-    // }
 }
