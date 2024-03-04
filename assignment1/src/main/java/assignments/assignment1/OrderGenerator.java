@@ -24,6 +24,7 @@ public class OrderGenerator {
     }
 
     public static void repeatingShowMenu(){
+        System.out.println("--------------------------------------------");
         System.out.println("Pilih menu:");
         System.err.println("1. Generate Order ID");
         System.out.println("2. Generate Bill");
@@ -64,6 +65,9 @@ public class OrderGenerator {
         }
     
     public static String generateBill(String OrderID, String lokasi){
+        lokasi = lokasi.toUpperCase();
+        System.out.println(lokasi);
+        String hargaPengiriman = "0";
         // CEK APAKAH FORMAT ORDERID VALID
 
         // DUMMY - JIKA KURANG DARI 16 TIDAK AAKAN TEREKSUKSI
@@ -87,87 +91,77 @@ public class OrderGenerator {
         if (OrderID.length() < 16) {
             System.out.println("Order ID minimal 16 karakter");
             System.out.println();
+            return "Err";
         }
         else if (OrderID.length() != 16) {
             System.out.println("Silahkan masukkan Order ID yang valid!");
             System.out.println();
+            return "Err";
         } else if ((OrderID.length() == 16)){
             if (nilaiStringIndex0_13Valid == false) {
                 System.out.println("Silahkan masukkan Order ID yang valid!");
                 System.out.println();
-                
+                return "Err";
             } else {
             String tempOrderIDWithoutCheckSum = OrderID.substring(0, 14);
             String tempCheckSum = getCheckSum(tempOrderIDWithoutCheckSum);
             if (OrderID.equals(tempOrderIDWithoutCheckSum+tempCheckSum) == false) {
                 System.out.println("Silahkan masukkan Order ID yang valid!");
                 System.out.println();
-            } else {
-                // CEK APAKAH LOKASI VALID
-            System.out.print("Lokasi Pengiriman : ");
-            String lokasiPengiriman = input.nextLine().toUpperCase();
-            if (lokasiPengiriman.equals("U")) {
-                String hargaPengiriman = 20000 + "";
-                System.out.println();
-                printTotalBill(tempOrderIDWithoutCheckSum+tempCheckSum, tempOrderIDWithoutCheckSum.substring(4,12), lokasiPengiriman, hargaPengiriman);
-                return "OK";
-            } else if (lokasiPengiriman.equals("T")) {
-                String hargaPengiriman = 35000 + "";
-                System.out.println();
-                printTotalBill(tempOrderIDWithoutCheckSum+tempCheckSum, tempOrderIDWithoutCheckSum.substring(4,12), lokasiPengiriman, hargaPengiriman);
-                return "OK";
-            } else if (lokasiPengiriman.equals("S")) {
-                String hargaPengiriman = 40000 + "";
-                System.out.println();
-                printTotalBill(tempOrderIDWithoutCheckSum+tempCheckSum, tempOrderIDWithoutCheckSum.substring(4,12), lokasiPengiriman, hargaPengiriman);
-                return "OK";
-            } else if (lokasiPengiriman.equals("B")) {
-                String hargaPengiriman = 60000 + "";
-                System.out.println();
-                printTotalBill(tempOrderIDWithoutCheckSum+tempCheckSum, tempOrderIDWithoutCheckSum.substring(4,12), lokasiPengiriman, hargaPengiriman);
-                return "OK";
-            }
-            else {
-            System.out.println("Harap masukkan lokasi pengiriman yang ada pada jangkauan!");
-            System.out.println();
-                }
-            }
+                return "Err";
+            } 
         }
     }
+    if (lokasi.equals("U")) {
+        hargaPengiriman = "20000";
+    } else if (lokasi.equals("T")) {
+        hargaPengiriman = "35000";
+    } else if (lokasi.equals("S")) {
+        hargaPengiriman = "40000";
+    } else if (lokasi.equals("B")) {
+        hargaPengiriman = "60000";
+    } else {
+        System.out.println("Harap masukkan lokasi pengiriman yang ada pada jangkauan!");
+        System.out.println();
         return "Err";
+    }
+    return "Bill:\n" + //
+            "Order ID: "+OrderID+"\n" + //  
+            "Tanggal Pemesanan: "+OrderID.substring(4,6)+"/"+OrderID.substring(6, 8)+"/"+OrderID.substring(8,12)+"\n" + //
+            "Lokasi Pengiriman: "+lokasi+"\n" + //
+            "Biaya Ongkos Kirim: Rp "+hargaPengiriman.substring(0,2) + "." + hargaPengiriman.substring(2)+"\n" + //
+            "";
     }
 
     public static void main(String[] args) {
 
         System.out.println("\033[2J\033[1;1H");
-        Scanner userInput = new Scanner(System.in);
         // show menu
         OrderGenerator.showMenu();
-
         while (true) { 
             System.out.println("--------------------------------------------");
             // input pilihan menu
             System.out.print("Pilihan menu: ");
             // int getSelectMenu = 2;
-            int getSelectMenu = userInput.nextInt(); 
-            userInput.nextLine();
+            int getSelectMenu = input.nextInt(); 
+            input.nextLine();
             
             if (getSelectMenu == 1){
                 while (true) {
                 System.out.print("Nama Restoran: ");
-                String namaRestoran = userInput.nextLine();
+                String namaRestoran = input.nextLine();
                 if (getNamaRestoran(namaRestoran) == "Err") {
                     System.out.println();
                     continue; 
                 }
                 System.out.print("Tanggal Pemesanan: ");
-                String tanggalOrder = userInput.nextLine();
+                String tanggalOrder = input.nextLine();
                 if (getTanggalOrder(tanggalOrder) == "Err") {
                     System.out.println();
                     continue;
                 }
                 System.out.print("No. Telpon: ");
-                String noTelepon = userInput.nextLine();
+                String noTelepon = input.nextLine();
                 if (getNoTelepon(noTelepon) == "Err") {
                     System.out.println();
                     continue; 
@@ -185,13 +179,44 @@ public class OrderGenerator {
             } else if (getSelectMenu == 2) {
                 while (true) {
                     System.out.print("Order ID : ");
-                    String getUserID = userInput.nextLine();
-                    String getBillDone = OrderGenerator.generateBill(getUserID, "//DUMMY//"); 
-                    if (getBillDone == "OK") {
-                        System.out.println("--------------------------------------------");
-                        OrderGenerator.repeatingShowMenu();
-                        break;
-                    } 
+                    String getUserID = input.nextLine();
+                    String getBillValid = OrderGenerator.generateBill(getUserID, "s");
+                    System.out.println(getBillValid);
+                    // if (getBillValid != "Err") {
+                    //     System.out.println(getBillValid);
+                    //     System.out.print("Lokasi Pengiriman: ");
+                    //     String getLokasiPengiriman = input.nextLine();
+                    //     getLokasiPengiriman = getLokasiPengiriman.toUpperCase();
+                    //     if (getLokasiPengiriman.equals("U")) {
+                    //         String hargaPengiriman = 20000 + "";
+                    //         System.out.println();
+
+                    //         OrderGenerator.repeatingShowMenu();
+                    //         break;
+                    //     } else if (getLokasiPengiriman.equals("T")) {
+                    //         String hargaPengiriman = 35000 + "";
+                    //         System.out.println();
+
+                    //         OrderGenerator.repeatingShowMenu();
+                    //         break;
+                    //     } else if (getLokasiPengiriman.equals("S")) {
+                    //         String hargaPengiriman = 40000 + "";
+                    //         System.out.println();
+
+                    //         OrderGenerator.repeatingShowMenu();
+                    //         break;
+                    //     } else if (getLokasiPengiriman.equals("B")) {
+                    //         String hargaPengiriman = 60000 + "";
+                    //         System.out.println();
+
+                    //         OrderGenerator.repeatingShowMenu();
+                    //         break;
+                    //     }
+                    //     else {
+                    //     System.out.println("Harap masukkan lokasi pengiriman yang ada pada jangkauan!");
+                    //     System.out.println();
+                    //         }
+                    //     }
                 }
             }
         }
@@ -297,12 +322,7 @@ public class OrderGenerator {
         return resultEvenCheckSum + resultOddCheckSum;
     }
 
-    public static void printTotalBill(String argOrderID, String argtTanggalOrder, String argLokasiPengiriman, String argBiayaPengiriman){
-        System.out.println("Bill:");
-        System.out.println("Order ID: " + argOrderID);
-        System.out.println("Tanggal Pemesanan: " + argtTanggalOrder.substring(0,2)+"/"+argtTanggalOrder.substring(2, 4)+"/"+argtTanggalOrder.substring(4));
-        System.out.println("Lokasi Pengiriman: " + argLokasiPengiriman);
-        System.out.println("Biaya Ongkos Kirim: " + "Rp " + argBiayaPengiriman.substring(0,2) + "." + argBiayaPengiriman.substring(2));
-        // System.out.println("--------------------------------------------");
-    }
+    // public static String printTotalBill(String argOrderID, String argtTanggalOrder, String argLokasiPengiriman, String argBiayaPengiriman){
+        
+    // }
 }
