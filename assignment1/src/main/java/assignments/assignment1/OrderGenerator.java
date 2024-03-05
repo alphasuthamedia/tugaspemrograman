@@ -63,6 +63,7 @@ public class OrderGenerator {
         }
     
     public static String generateBill(String OrderID, String lokasi){
+        OrderID = OrderID.toUpperCase();
         lokasi = lokasi.toUpperCase();
         String hargaPengiriman = "0";
         // CEK APAKAH FORMAT ORDERID VALID
@@ -81,6 +82,7 @@ public class OrderGenerator {
                 break;
             }
         }
+        
         // CEK ULANG APAKAH STRING INDEX 0 - 13 VALID
         nilaiStringIndex0_13Valid = namaRestoranValid && nilaiStringIndex4_13Valid; 
         }
@@ -108,6 +110,10 @@ public class OrderGenerator {
                 return "Err";
             } 
         }
+    }
+    // DUMMY CHECKER
+    if (lokasi.equals("DUMMY")) {
+        return "OK!";
     }
     if (lokasi.equals("U")) {
         hargaPengiriman = "20000";
@@ -141,10 +147,9 @@ public class OrderGenerator {
             System.out.println("--------------------------------------------");
             // input pilihan menu
             System.out.print("Pilihan menu: ");
-            int getSelectMenu = input.nextInt(); 
-            input.nextLine();
+            String getSelectMenu = input.nextLine();
             
-            if (getSelectMenu == 1){
+            if (getSelectMenu.equals("1")){
                 System.out.println();
                 while (true) {
                     System.out.print("Nama Restoran: ");
@@ -162,7 +167,7 @@ public class OrderGenerator {
                     System.out.print("No. Telpon: ");
                     String noTelepon = input.nextLine();
                     if (getNoTelepon(noTelepon) == "Err") {
-                        System.out.println();
+                        System.out.println("");
                         continue; 
                 }
                     // print jika semua input valid
@@ -171,21 +176,21 @@ public class OrderGenerator {
                     break;
                 }
             }
-            else if (getSelectMenu == 3){
+            else if (getSelectMenu.equals("3")){
                 System.out.println("Terima kasih telah menggunakan DepeFood!");
                 break;
-            } else if (getSelectMenu == 2) {
+            } else if (getSelectMenu.equals("2")) {
                 while (true) {
                     System.out.print("Order ID : ");
                     String getUserID = input.nextLine();
-                    String getBillValid = OrderGenerator.generateBill(getUserID, "s");
+                    String getBillValid = OrderGenerator.generateBill(getUserID, "DUMMY");
                     if (getBillValid != "Err"){
                         System.out.print("Lokasi Pengiriman: ");
                         String getLokasiPengiriman = input.nextLine();
                         System.out.println();
                         // cek apakah lokasinya tersedia
                         if (OrderGenerator.generateBill(getUserID, getLokasiPengiriman) != "Err") {
-                            System.out.println(OrderGenerator.generateBill(getUserID, getLokasiPengiriman)); // Print output
+                            System.out.print(OrderGenerator.generateBill(getUserID, getLokasiPengiriman)); // Print output
                             break;
                         }
                     }
