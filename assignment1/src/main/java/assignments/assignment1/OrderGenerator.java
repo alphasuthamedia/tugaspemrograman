@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class OrderGenerator {
     String namaString;
     private static final Scanner input = new Scanner(System.in);
+
     // Method  ini untuk menampilkan menu
     public static void showMenu(){
         System.out.println(">>=======================================<<");
@@ -29,6 +30,7 @@ public class OrderGenerator {
         System.out.println("3. Keluar");
     }
 
+    // method ini untuk menghasilkan generateOrderID
     public static String generateOrderID(String argNamaRestoran, String argTanggalOrder, String argNoTelepon) {
         String orderID = "";
         // inisiasi namaRestoran
@@ -62,6 +64,7 @@ public class OrderGenerator {
         return orderID;
         }
     
+    // method ini untuk menghasilkan generateBill
     public static String generateBill(String OrderID, String lokasi){
         OrderID = OrderID.toUpperCase();
         lokasi = lokasi.toUpperCase();
@@ -115,6 +118,7 @@ public class OrderGenerator {
     if (lokasi.equals("DUMMY")) {
         return "OK!";
     }
+
     if (lokasi.equals("U")) {
         hargaPengiriman = "20000";
     } else if (lokasi.equals("T")) {
@@ -201,6 +205,7 @@ public class OrderGenerator {
         }
     }
     
+    // method ini untuk menghasilkan namaRestoran
     public static String getNamaRestoran(String argNamaRestoran){
         // wrapping namaRestoran
         String namaRestoran = "";
@@ -214,6 +219,7 @@ public class OrderGenerator {
         }
     }
 
+    // method ini untuk menghasilkan tanggalOrder
     public static String getTanggalOrder(String argTanggalOrder){
         // wrapping tanggalOrder
         if (argTanggalOrder.charAt(2) != '/' || argTanggalOrder.charAt(5) != '/') {
@@ -229,6 +235,7 @@ public class OrderGenerator {
         return tanggalOrder;
     }
     
+    // method ini untuk menghasilkan noTelepon
     public static String getNoTelepon(String argNoTelepon){
         // wrapping noTelepon
         // error msg
@@ -254,6 +261,7 @@ public class OrderGenerator {
         }
     }
 
+    // method ini untuk menghasilkan checkSum
     public static String getCheckSum(String argCheckSum){
         // wrapping checkSum
 
