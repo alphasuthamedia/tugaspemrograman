@@ -190,6 +190,8 @@ public class OrderGenerator {
                         }
                     }
                 }
+            } else {
+                continue;
             }
         }
     }
