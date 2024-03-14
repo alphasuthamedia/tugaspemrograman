@@ -16,5 +16,9 @@ public class Order {
         this.items = items;
     }
     
+    @Override
+    public String toString() {
+        return orderId + tanggal + ongkir + resto + items.toString();
+    }
     // TODO: tambahkan methods yang diperlukan untuk class ini
 }

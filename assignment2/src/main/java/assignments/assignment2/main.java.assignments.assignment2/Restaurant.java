@@ -22,5 +22,6 @@ public class Restaurant {
     public String getNama() {
         return nama;
     }
+
     // TODO: tambahkan methods yang diperlukan untuk class ini
 }

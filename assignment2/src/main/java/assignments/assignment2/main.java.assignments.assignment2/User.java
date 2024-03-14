@@ -9,7 +9,7 @@ public class User{
     String email;
     String lokasi;
     String role;
-    private ArrayList<Order>  orderHistory = new ArrayList<>();
+    ArrayList<Order> orderHistory = new ArrayList<>();
     public User(String nama, String nomorTelepon, String email, String lokasi, String role){
         // TODO: buat constructor untuk class ini
         this.nama = nama;
@@ -38,11 +38,7 @@ public class User{
         return email;
     }
 
-    public String toString(){
-        return "Nama: " + this.nama + "\nNomor Telepon: " + this.nomorTelepon + "\nEmail: " + this.email + "\nLokasi: " + this.lokasi + "\nRole: " + this.role;
-    }
-
-    public void setOrderHistory(ArrayList<Order> orderHistory) {
-        this.orderHistory = orderHistory;
+    public void addOrderHistory(Order order) {
+        this.orderHistory.add(order);
     }
 }
