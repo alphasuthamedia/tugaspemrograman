@@ -19,6 +19,9 @@ public class MainMenu {
     private static ArrayList<Restaurant> restoList = new ArrayList<>();
     private static ArrayList<User> userList;
 
+    /* Add list pesanan yang sudah selesai */
+    private static ArrayList<String> listPesananSelesai = new ArrayList<>();
+
     // define userLoggedIn
     private static User userLoggedIn;
 
@@ -194,9 +197,6 @@ public class MainMenu {
                     }
                 }
             }
-        
-            /* Define User */
-            // User user = new User(userLoggedIn.nama, userLoggedIn.nomorTelepon, userLoggedIn.email, userLoggedIn.lokasi, userLoggedIn.role);
 
             /* Define resto */
             Restaurant inputResto = new Restaurant(namaRestoran);
@@ -245,29 +245,30 @@ public class MainMenu {
     public static void handleCetakBill() {
         // TODO: Implementasi method untuk handle ketika customer ingin cetak bill
         System.out.println("--------------Cetak Bill----------------");
-        System.out.print("Masukkan ID Pesanan: ");
+        System.out.print("Masukkan Order ID: ");
         String idPesanan = input.nextLine();
         System.out.println();
 
+        System.out.println("Bill: ");
         for (User user : userList){
-            
             for (int i= 0; i < user.orderHistory.size(); i++){
                 if (idPesanan.equals(user.orderHistory.get(i).orderId));{
                     System.out.println("ID Pesanan: " + user.orderHistory.get(i).orderId);
                     System.out.println("Tanggal Pemesanan: " + user.orderHistory.get(i).tanggal);
                     System.out.println("Restaurant: " + user.orderHistory.get(i).resto.getNama());
                     System.out.println("Lokasi Pengiriman : " + user.lokasi);
+                    System.out.println("Status Pengiriman : " + (listPesananSelesai.contains(idPesanan) ? "Finised" : "Not Finished"));
                     System.out.println("Pesanan: ");
                     for (int j = 0; j < user.orderHistory.get(i).items.length; j++){
-                        System.out.println("-"+user.orderHistory.get(i).items[j].namaMakanan + " " + user.orderHistory.get(i).items[j].harga);
+                        System.out.println("- "+user.orderHistory.get(i).items[j].namaMakanan + " " + (int) user.orderHistory.get(i).items[j].harga);
                     }
-                    System.out.println("Biaya ongkos kirim: " + user.orderHistory.get(i).ongkir);
+                    System.out.println("Biaya ongkos kirim: Rp " + user.orderHistory.get(i).ongkir);
                     double totalHarga = 0;
                     for (int j = 0; j < user.orderHistory.get(i).items.length; j++){
                         totalHarga += user.orderHistory.get(i).items[j].harga;
                     }
                     totalHarga += user.orderHistory.get(i).ongkir; // tambahkan ongkir
-                    System.out.println("Total biaya: " + totalHarga);
+                    System.out.print("Total biaya: Rp " + (int) totalHarga);
                 }
             }
         }
@@ -275,10 +276,85 @@ public class MainMenu {
 
     public static void handleLihatMenu() {
         // TODO: Implementasi method untuk handle ketika customer ingin melihat menu
+        System.out.println("--------------Lihat Menu----------------");
+        System.out.print("Nama Restoran: ");
+        String namaRestoran = input.nextLine();
+        
+        boolean isExist = false;
+
+        for (Restaurant resto : restoList){
+            if (resto.getNama().equals(namaRestoran)){
+                isExist = true;           
+                for (int i = 0; i < resto.getMenu().size(); i++){
+                    String[] tempNamaMakanan = new String[resto.getMenu().size()];
+                    int[] tempHargaMakanan = new int[resto.getMenu().size()];
+
+                    tempNamaMakanan[i] = resto.getMenu().get(i).namaMakanan;
+                    tempHargaMakanan[i] = resto.getMenu().get(i).harga;
+                }
+            }
+        }
+
+        /* Pengurutan berdasrkan harga */
+        if (isExist == true){
+            for (Restaurant resto : restoList){
+                if (resto.getNama().equals(namaRestoran)){
+                    for (int i = 0; i < resto.getMenu().size(); i++){
+                        for (int j = i+1; j < resto.getMenu().size(); j++){
+                            if (resto.getMenu().get(i).harga > resto.getMenu().get(j).harga){
+                                Menu temp = resto.getMenu().get(i);
+                                resto.getMenu().set(i, resto.getMenu().get(j));
+                                resto.getMenu().set(j, temp);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Restaurant resto : restoList){
+            if (resto.getNama().equals(namaRestoran)){
+                System.out.println("Menu:");
+                for (int i = 0; i < resto.getMenu().size(); i++){
+                    System.out.print("- " + resto.getMenu().get(i).namaMakanan + (int) resto.getMenu().get(i).harga);
+                    if (i == resto.getMenu().size() - 1){
+                        System.out.println();
+                    }
+                }
+            }
+        }
+
+        if (isExist == false){
+            System.out.print("Restoran tidak terdaftar pada sistem.");
+        }
     }
 
     public static void handleUpdateStatusPesanan() {
         // TODO: Implementasi method untuk handle ketika customer ingin update status pesanan
+        System.out.println("--------------Update Status Pesanan----------------");
+        System.out.print("Order ID: ");
+        String idPesanan = input.nextLine();
+        System.out.print("Status: ");
+        String status = input.nextLine();
+
+        boolean isExist = false;
+        for (User user: userList){
+            for (int i = 0; i < user.orderHistory.size(); i++){
+                if (idPesanan.equals(user.orderHistory.get(i).orderId)){
+                    if (listPesananSelesai.contains(idPesanan) == true) {
+                        System.out.println("Status pesanan dengan ID " + idPesanan + " tidak berhasil diupdate!");
+                    } else {
+                        listPesananSelesai.add(idPesanan);
+                        isExist = true;
+                        System.out.print("Status pesanan dengan ID " + idPesanan + " berhasil diupdate!");
+                    }
+                }
+            }
+        }
+
+        if (isExist == false){
+            System.out.println("Order ID tidak dapat ditemukan.");
+        }
     }
 
     public static void handleTambahRestoran() {
