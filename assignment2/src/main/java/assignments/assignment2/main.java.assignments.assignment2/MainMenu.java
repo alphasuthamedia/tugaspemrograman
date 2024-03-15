@@ -196,7 +196,7 @@ public class MainMenu {
             }
         
             /* Define User */
-            User user = new User(userLoggedIn.nama, userLoggedIn.nomorTelepon, userLoggedIn.email, userLoggedIn.lokasi, userLoggedIn.role);
+            // User user = new User(userLoggedIn.nama, userLoggedIn.nomorTelepon, userLoggedIn.email, userLoggedIn.lokasi, userLoggedIn.role);
 
             /* Define resto */
             Restaurant inputResto = new Restaurant(namaRestoran);
@@ -230,13 +230,47 @@ public class MainMenu {
             /* Define Order */
             Order order = new Order(orderID, tanggalPemesanan, ongkir, inputResto, menu);
 
-            user.addOrderHistory(order);
+            // user.addOrderHistory(order);
             
+            for (User user : userList){
+                if (userLoggedIn.nama.equals(user.nama) && userLoggedIn.nomorTelepon.equals(user.nomorTelepon)){
+                    user.addOrderHistory(order);
+                }
+            }
+            System.out.print("Pesanan dengan ID " + orderID + " diterima.");
+            break;
         }
     }
 
     public static void handleCetakBill() {
         // TODO: Implementasi method untuk handle ketika customer ingin cetak bill
+        System.out.println("--------------Cetak Bill----------------");
+        System.out.print("Masukkan ID Pesanan: ");
+        String idPesanan = input.nextLine();
+        System.out.println();
+
+        for (User user : userList){
+            
+            for (int i= 0; i < user.orderHistory.size(); i++){
+                if (idPesanan.equals(user.orderHistory.get(i).orderId));{
+                    System.out.println("ID Pesanan: " + user.orderHistory.get(i).orderId);
+                    System.out.println("Tanggal Pemesanan: " + user.orderHistory.get(i).tanggal);
+                    System.out.println("Restaurant: " + user.orderHistory.get(i).resto.getNama());
+                    System.out.println("Lokasi Pengiriman : " + user.lokasi);
+                    System.out.println("Pesanan: ");
+                    for (int j = 0; j < user.orderHistory.get(i).items.length; j++){
+                        System.out.println("-"+user.orderHistory.get(i).items[j].namaMakanan + " " + user.orderHistory.get(i).items[j].harga);
+                    }
+                    System.out.println("Biaya ongkos kirim: " + user.orderHistory.get(i).ongkir);
+                    double totalHarga = 0;
+                    for (int j = 0; j < user.orderHistory.get(i).items.length; j++){
+                        totalHarga += user.orderHistory.get(i).items[j].harga;
+                    }
+                    totalHarga += user.orderHistory.get(i).ongkir; // tambahkan ongkir
+                    System.out.println("Total biaya: " + totalHarga);
+                }
+            }
+        }
     }
 
     public static void handleLihatMenu() {
