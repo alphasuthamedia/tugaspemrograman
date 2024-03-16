@@ -250,9 +250,12 @@ public class MainMenu {
         System.out.println();
 
         System.out.println("Bill: ");
+
+        boolean isExist = false;
         for (User user : userList){
             for (int i= 0; i < user.orderHistory.size(); i++){
-                if (idPesanan.equals(user.orderHistory.get(i).orderId));{
+                if (idPesanan.equals(user.orderHistory.get(i).orderId)){
+                    isExist = true;
                     System.out.println("ID Pesanan: " + user.orderHistory.get(i).orderId);
                     System.out.println("Tanggal Pemesanan: " + user.orderHistory.get(i).tanggal);
                     System.out.println("Restaurant: " + user.orderHistory.get(i).resto.getNama());
@@ -260,7 +263,8 @@ public class MainMenu {
                     System.out.println("Status Pengiriman : " + (listPesananSelesai.contains(idPesanan) ? "Finised" : "Not Finished"));
                     System.out.println("Pesanan: ");
                     for (int j = 0; j < user.orderHistory.get(i).items.length; j++){
-                        System.out.println("- "+user.orderHistory.get(i).items[j].namaMakanan + " " + (int) user.orderHistory.get(i).items[j].harga);
+                        int hargaPerMakanan = (int) user.orderHistory.get(i).items[j].harga;
+                        System.out.println("- "+user.orderHistory.get(i).items[j].namaMakanan + " " + hargaPerMakanan);
                     }
                     System.out.println("Biaya ongkos kirim: Rp " + user.orderHistory.get(i).ongkir);
                     double totalHarga = 0;
@@ -268,9 +272,18 @@ public class MainMenu {
                         totalHarga += user.orderHistory.get(i).items[j].harga;
                     }
                     totalHarga += user.orderHistory.get(i).ongkir; // tambahkan ongkir
-                    System.out.print("Total biaya: Rp " + (int) totalHarga);
+                    int totalHargaInt = (int) totalHarga;
+                    System.out.print("Total biaya: Rp " + totalHargaInt);
+                    if (i < user.orderHistory.size() - 1){
+                        System.out.println();
+                        System.out.println();
+                    }
                 }
             }
+        }
+        
+        if (isExist == false){
+            System.out.print("Order ID tidak dapat ditemukan.");
         }
     }
 
@@ -287,7 +300,7 @@ public class MainMenu {
                 isExist = true;           
                 for (int i = 0; i < resto.getMenu().size(); i++){
                     String[] tempNamaMakanan = new String[resto.getMenu().size()];
-                    int[] tempHargaMakanan = new int[resto.getMenu().size()];
+                    double[] tempHargaMakanan = new double[resto.getMenu().size()];
 
                     tempNamaMakanan[i] = resto.getMenu().get(i).namaMakanan;
                     tempHargaMakanan[i] = resto.getMenu().get(i).harga;
@@ -312,12 +325,33 @@ public class MainMenu {
             }
         }
 
+        /* Pengurutan berdasrkan abjad atau nama menu */
+        if (isExist == true){
+            for (Restaurant resto : restoList){
+                if (resto.getNama().equals(namaRestoran)){
+                    for (int i = 0; i < resto.getMenu().size(); i++){
+                        for (int j = i+1; j < resto.getMenu().size(); j++){
+                            if (resto.getMenu().get(i).harga == resto.getMenu().get(j).harga){
+                                if (resto.getMenu().get(i).namaMakanan.compareTo(resto.getMenu().get(j).namaMakanan) > 0){
+                                    Menu temp = resto.getMenu().get(i);
+                                    resto.getMenu().set(i, resto.getMenu().get(j));
+                                    resto.getMenu().set(j, temp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         for (Restaurant resto : restoList){
             if (resto.getNama().equals(namaRestoran)){
                 System.out.println("Menu:");
                 for (int i = 0; i < resto.getMenu().size(); i++){
-                    System.out.print("- " + resto.getMenu().get(i).namaMakanan + (int) resto.getMenu().get(i).harga);
-                    if (i == resto.getMenu().size() - 1){
+                    double printHargaMakanan = resto.getMenu().get(i).harga;
+                    int printHargaMakananInt = (int) printHargaMakanan;
+                    System.out.print("- " + resto.getMenu().get(i).namaMakanan + printHargaMakananInt);
+                    if (i < resto.getMenu().size() - 1){
                         System.out.println();
                     }
                 }
@@ -353,7 +387,7 @@ public class MainMenu {
         }
 
         if (isExist == false){
-            System.out.println("Order ID tidak dapat ditemukan.");
+            System.out.print("Order ID tidak dapat ditemukan.");
         }
     }
 
