@@ -7,6 +7,7 @@ public class Order {
     int ongkir;
     Restaurant resto;
     Menu[] items;
+    boolean orderFinished;
     public Order(String orderId, String tanggal, int ongkir, Restaurant resto, Menu[] items){
         // TODO: buat constructor untuk class ini
         this.orderId = orderId;
@@ -16,6 +17,18 @@ public class Order {
         this.items = items;
     }
     
+    public void setOrderFinished(boolean orderFinished) {
+        this.orderFinished = orderFinished;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public boolean getOrderFinished(){
+        return orderFinished;   
+    }
+
     @Override
     public String toString() {
         return orderId + tanggal + ongkir + resto + items.toString();

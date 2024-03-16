@@ -243,6 +243,7 @@ public class MainMenu {
     }
 
     public static void handleCetakBill() {
+        Order order;
         // TODO: Implementasi method untuk handle ketika customer ingin cetak bill
         System.out.println("--------------Cetak Bill----------------");
         System.out.print("Masukkan Order ID: ");
@@ -260,7 +261,7 @@ public class MainMenu {
                     System.out.println("Tanggal Pemesanan: " + user.orderHistory.get(i).tanggal);
                     System.out.println("Restaurant: " + user.orderHistory.get(i).resto.getNama());
                     System.out.println("Lokasi Pengiriman : " + user.lokasi);
-                    System.out.println("Status Pengiriman : " + (listPesananSelesai.contains(idPesanan) ? "Finised" : "Not Finished"));
+                    System.out.println("Status Pengiriman : " + ((user.orderHistory.get(i).getOrderFinished() == true) ? "Finised" : "Not Finished"));
                     System.out.println("Pesanan: ");
                     for (int j = 0; j < user.orderHistory.get(i).items.length; j++){
                         int hargaPerMakanan = (int) user.orderHistory.get(i).items[j].harga;
@@ -364,6 +365,7 @@ public class MainMenu {
     }
 
     public static void handleUpdateStatusPesanan() {
+        Order order;
         // TODO: Implementasi method untuk handle ketika customer ingin update status pesanan
         System.out.println("--------------Update Status Pesanan----------------");
         System.out.print("Order ID: ");
@@ -371,23 +373,27 @@ public class MainMenu {
         System.out.print("Status: ");
         String status = input.nextLine();
 
-        boolean isExist = false;
-        for (User user: userList){
-            for (int i = 0; i < user.orderHistory.size(); i++){
-                if (idPesanan.equals(user.orderHistory.get(i).orderId)){
-                    if (listPesananSelesai.contains(idPesanan) == true) {
-                        System.out.println("Status pesanan dengan ID " + idPesanan + " tidak berhasil diupdate!");
-                    } else {
-                        listPesananSelesai.add(idPesanan);
-                        isExist = true;
-                        System.out.print("Status pesanan dengan ID " + idPesanan + " berhasil diupdate!");
+        if (status.equalsIgnoreCase(status)) {
+            boolean isExist = false;
+            for (User user: userList){
+                for (int i = 0; i < user.orderHistory.size(); i++){
+                    if (idPesanan.equals(user.orderHistory.get(i).orderId)){
+                        if (user.orderHistory.get(i).getOrderFinished() == true) {
+                            System.out.println("Status pesanan dengan ID " + idPesanan + " tidak berhasil diupdate!");
+                            isExist = true;
+                        } else {
+                            user.orderHistory.get(i).setOrderFinished(true);
+                            isExist = true;
+                            System.out.print("Status pesanan dengan ID " + idPesanan + " berhasil diupdate!");
+                        }
                     }
                 }
             }
-        }
 
-        if (isExist == false){
-            System.out.print("Order ID tidak dapat ditemukan.");
+            if (isExist == false){
+                System.out.print("Order ID tidak dapat ditemukan.");
+            }
+
         }
     }
 
