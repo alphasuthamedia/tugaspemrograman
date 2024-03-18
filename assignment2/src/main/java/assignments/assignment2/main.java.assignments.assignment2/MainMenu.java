@@ -11,10 +11,6 @@ import assignments.assignment1.OrderGenerator;
 // import assignments.assignment1.OrderGenerator;
 
 public class MainMenu {
-
-    /* Define OrderGenerator Sementara */
-    private static OrderGenerator orderGenerator = new OrderGenerator();
-
     private static final Scanner input = new Scanner(System.in);
     private static ArrayList<Restaurant> restoList = new ArrayList<>();
     private static ArrayList<User> userList;
@@ -249,12 +245,12 @@ public class MainMenu {
             boolean isExist = false;
             for (User user : userList){
                 for (int i= 0; i < user.orderHistory.size(); i++){
-                    if (idPesanan.equals(user.orderHistory.get(i).orderId)){
+                    if (idPesanan.equals(user.orderHistory.get(i).orderID)){
                         isExist = true;
                         System.out.println("Bill: ");
-                        System.out.println("ID Pesanan: " + user.orderHistory.get(i).orderId);
-                        System.out.println("Tanggal Pemesanan: " + user.orderHistory.get(i).tanggal);
-                        System.out.println("Restaurant: " + user.orderHistory.get(i).resto.getNama());
+                        System.out.println("ID Pesanan: " + user.orderHistory.get(i).orderID);
+                        System.out.println("Tanggal Pemesanan: " + user.orderHistory.get(i).tanggalPemesanan);
+                        System.out.println("Restaurant: " + user.orderHistory.get(i).restaurant.getNama());
                         System.out.println("Lokasi Pengiriman : " + user.lokasi);
                         System.out.println("Status Pengiriman : " + ((user.orderHistory.get(i).getOrderFinished() == true) ? "Finised" : "Not Finished"));
                         System.out.println("Pesanan: ");
@@ -262,12 +258,12 @@ public class MainMenu {
                             int hargaPerMakanan = (int) user.orderHistory.get(i).items[j].harga;
                             System.out.println("- " + user.orderHistory.get(i).items[j].namaMakanan + " " + hargaPerMakanan);
                         }
-                        System.out.println("Biaya ongkos kirim: Rp " + user.orderHistory.get(i).ongkir);
+                        System.out.println("Biaya ongkos kirim: Rp " + user.orderHistory.get(i).biayaOngkosKirim);
                         double totalHarga = 0;
                         for (int j = 0; j < user.orderHistory.get(i).items.length; j++){
                             totalHarga += user.orderHistory.get(i).items[j].harga;
                         }
-                        totalHarga += user.orderHistory.get(i).ongkir; // tambahkan ongkir
+                        totalHarga += user.orderHistory.get(i).biayaOngkosKirim; // tambahkan ongkir
                         int totalHargaInt = (int) totalHarga;
                         System.out.print("Total biaya: Rp " + totalHargaInt);
                         if (i < user.orderHistory.size() - 1){
@@ -353,7 +349,7 @@ public class MainMenu {
                     for (int i = 0; i < resto.getMenu().size(); i++){
                         double printHargaMakanan = resto.getMenu().get(i).harga;
                         int printHargaMakananInt = (int) printHargaMakanan;
-                        System.out.print("- " + resto.getMenu().get(i).namaMakanan + printHargaMakananInt);
+                        System.out.print((i+1) + ". " + resto.getMenu().get(i).namaMakanan + printHargaMakananInt);
                         if (i < resto.getMenu().size() - 1){
                             System.out.println();
                         }
@@ -382,7 +378,7 @@ public class MainMenu {
                 boolean isExist = false;
                 for (User user: userList){
                     for (int i = 0; i < user.orderHistory.size(); i++){
-                        if (idPesanan.equals(user.orderHistory.get(i).orderId)){
+                        if (idPesanan.equals(user.orderHistory.get(i).orderID)){
                             if (user.orderHistory.get(i).getOrderFinished() == true) {
                                 System.out.println("Status pesanan dengan ID " + idPesanan + " tidak berhasil diupdate!");
                                 isExist = true;
@@ -396,7 +392,7 @@ public class MainMenu {
                 }
 
                 if (isExist == false){
-                    System.out.print("Order ID tidak dapat ditemukan.");
+                    System.out.println("Order ID tidak dapat ditemukan.\n");
                 } else {
                     break;
                 }

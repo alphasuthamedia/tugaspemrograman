@@ -2,18 +2,18 @@ package main.java.assignments.assignment2;
 
 public class Order {
      // TODO: tambahkan attributes yang diperlukan untuk class ini
-    String orderId;
-    String tanggal;
-    int ongkir;
-    Restaurant resto;
+    String orderID;
+    String tanggalPemesanan;
+    int biayaOngkosKirim;
+    Restaurant restaurant;
     Menu[] items;
     boolean orderFinished;
-    public Order(String orderId, String tanggal, int ongkir, Restaurant resto, Menu[] items){
+    public Order(String orderID, String tanggalPemesanan, int biayaOngkosKirim, Restaurant restaurant, Menu[] items){
         // TODO: buat constructor untuk class ini
-        this.orderId = orderId;
-        this.tanggal = tanggal;
-        this.ongkir = ongkir;
-        this.resto = resto;
+        this.orderID = orderID;
+        this.tanggalPemesanan = tanggalPemesanan;
+        this.biayaOngkosKirim = biayaOngkosKirim;
+        this.restaurant = restaurant;
         this.items = items;
     }
     
@@ -22,7 +22,7 @@ public class Order {
     }
 
     public String getOrderId() {
-        return orderId;
+        return orderID;
     }
 
     public boolean getOrderFinished(){
@@ -31,7 +31,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return orderId + tanggal + ongkir + resto + items.toString();
+        return orderID + tanggal + ongkir + resto + items.toString();
     }
     // TODO: tambahkan methods yang diperlukan untuk class ini
 }
