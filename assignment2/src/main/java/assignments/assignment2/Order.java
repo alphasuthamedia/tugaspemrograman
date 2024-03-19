@@ -1,4 +1,4 @@
-package main.java.assignments.assignment2;
+package assignments.assignment2;
 
 public class Order {
      // TODO: tambahkan attributes yang diperlukan untuk class ini
@@ -31,7 +31,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return orderID + tanggal + ongkir + resto + items.toString();
+        return orderID + tanggalPemesanan + biayaOngkosKirim + restaurant + items.toString();
     }
     // TODO: tambahkan methods yang diperlukan untuk class ini
 }

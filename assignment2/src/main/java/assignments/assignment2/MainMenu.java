@@ -1,9 +1,9 @@
-package main.java.assignments.assignment2;
+package assignments.assignment2;
 // package main.java.assignments.assignment2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import assignment1.src.main.java.assignments.assignment1.*;
+import assignments.assignment1.*;
 // import assignments.assignment1.OrderGenerator;
 
 import assignments.assignment1.OrderGenerator;
