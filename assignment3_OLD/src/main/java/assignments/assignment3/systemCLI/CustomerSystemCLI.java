@@ -2,11 +2,9 @@ package assignments.assignment3.systemCLI;
 
 import java.util.Scanner;
 
-//TODO: Extends abstract class yang diberikan
-public class CustomerSystemCLI extends UserSystemCLI {
+public class CustomerSystemCLI extends UserSystemCLI{
 
-    //TODO: Tambahkan modifier dan buatlah metode ini mengoverride dari Abstract class
-    public boolean handleMenu(int choice){
+    protected boolean handleMenu(int choice){
         switch(choice){
             case 1 -> handleBuatPesanan();
             case 2 -> handleCetakBill();
@@ -21,9 +19,8 @@ public class CustomerSystemCLI extends UserSystemCLI {
         return true;
     }
 
-    //TODO: Tambahkan modifier dan buatlah metode ini mengoverride dari Abstract class
-    public void displayMenu() {
-        System.out.println("--------------------------------------------");
+    protected void displayMenu() {
+        System.out.println("\n--------------------------------------------");
         System.out.println("Pilih menu:");
         System.out.println("1. Buat Pesanan");
         System.out.println("2. Cetak Bill");

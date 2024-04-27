@@ -1,27 +1,17 @@
 package assignments.assignment2;
 
-import java.util.ArrayList;
-
 public class Menu {
-    String namaMakanan;
-    double harga;
-     // TODO: tambahkan attributes yang diperlukan untuk class ini
+    
+    private String namaMakanan;
+    private double harga; 
     public Menu(String namaMakanan, double harga){
-        // TODO: buat constructor untuk class ini
         this.namaMakanan = namaMakanan;
         this.harga = harga;
     }
-
-    public String getNamaMakanan() {
-        return this.namaMakanan;
-    }
-
     public double getHarga() {
-        return this.harga;
+        return harga;
     }
-
-    @Override
-    public String toString() {
-        return this.namaMakanan + this.harga;
+    public String getNamaMakanan() {
+        return namaMakanan;
     }
 }

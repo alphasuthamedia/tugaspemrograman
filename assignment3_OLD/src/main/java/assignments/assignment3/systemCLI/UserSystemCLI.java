@@ -13,6 +13,6 @@ public abstract class UserSystemCLI {
             isLoggedIn = handleMenu(command);
         }
     }
-    public abstract void displayMenu();
-    public abstract boolean handleMenu(int command);
+    abstract void displayMenu();
+    abstract boolean handleMenu(int command);
 }

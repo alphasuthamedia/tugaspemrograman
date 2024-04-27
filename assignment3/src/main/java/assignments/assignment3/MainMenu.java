@@ -5,11 +5,12 @@ import java.util.Scanner;
 
 import assignments.assignment2.Restaurant;
 import assignments.assignment2.User;
-import assignments.assignment3.LoginManager
+import assignments.assignment3.LoginManager;
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
 import assignments.assignment3.systemCLI.AdminSystemCLI;
 import assignments.assignment3.systemCLI.CustomerSystemCLI;
+import assignments.assignment3.systemCLI.UserSystemCLI;
 
 public class MainMenu {
     private final Scanner input;
@@ -23,6 +24,14 @@ public class MainMenu {
     }
 
     public static void main(String[] args) {
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        /* Insialisasi User dan restoList*/
+        initUser();
+        restoList = new ArrayList<Restaurant>();
+
         MainMenu mainMenu = new MainMenu(new Scanner(System.in), new LoginManager(new AdminSystemCLI(), new CustomerSystemCLI()));
         mainMenu.run();
     }
@@ -52,10 +61,43 @@ public class MainMenu {
         String noTelp = input.nextLine();
 
         // TODO: Validasi input login
+        if (getUser(nama, noTelp) != null) {
 
-        User userLoggedIn; // TODO: lengkapi
+            /* Inisisasi user yang login
+             * get CLI yang sesuai dengan tipe user
+             */
+            User userLoggedIn = getUser(nama, noTelp);
 
-        loginManager.getSystem(userLoggedIn.role);
+            if (userLoggedIn.role.equals("Admin")) {
+                System.out.print("Selamat datang Admin!");
+                AdminSystemCLI adminSystemCLI = (AdminSystemCLI) loginManager.getSystem(userLoggedIn.role);
+
+                boolean controller = true;
+                while (controller) {
+                    adminSystemCLI.displayMenu();
+                    int menuSelector = input.nextInt();
+                    input.nextLine(); // flush
+
+                    controller = adminSystemCLI.handleMenu(menuSelector);
+
+                    /* Tambahkan restoList ke restoList */
+                    if ((menuSelector == 1) || (menuSelector == 2)){
+                        /* Perbarui restoList */
+                        restoList.clear(); // flush restolist (dimungkinkan sudah ada isinya)
+                        for (Restaurant adjustedRestaurant : adminSystemCLI.adjustRestaurants()) {
+                            restoList.add(adjustedRestaurant);
+                        }
+                    }
+                }
+            } else {
+                CustomerSystemCLI customerSystemCLI = (CustomerSystemCLI) loginManager.getSystem(userLoggedIn.role);
+            }
+
+            
+        } else {
+            System.out.println("User tidak ditemukan.");
+            return;
+        }
     }
 
     private static void printHeader(){
@@ -90,5 +132,14 @@ public class MainMenu {
 
         userList.add(new User("Admin", "123456789", "admin@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
         userList.add(new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
+    }
+
+    private User getUser(String nama, String noTelp){
+        for (User user : userList) {
+            if (user.getNama().equals(nama) && user.getNomorTelepon().equals(noTelp)) {
+                return user;
+            }
+        }
+        return null; // jika dan hanya jika user tidak ditemukan
     }
 }

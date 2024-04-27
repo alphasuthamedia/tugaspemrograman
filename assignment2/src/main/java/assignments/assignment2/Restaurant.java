@@ -1,27 +1,81 @@
 package assignments.assignment2;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Restaurant {
-     // TODO: tambahkan attributes yang diperlukan untuk class ini
-    String nama;
-    ArrayList<Menu> menu;
+    private String nama;
+    private ArrayList<Menu> menu;
+    private long saldo; // Jumlah saldo yang dmiliki restoran
+
+    /* Constructor solusi TP2 */
     public Restaurant(String nama){
-        // TODO: buat constructor untuk class ini
         this.nama = nama;
+        this.menu = new ArrayList<Menu>();
     }
 
-    public void setMenu(ArrayList<Menu> menu) {
-        this.menu = menu;
-    }
-
-    public ArrayList<Menu> getMenu() {
-        return menu;
+    /* Constructor yang disesuaikan dengan TP3 */
+    public Restaurant(String nama, long saldo){
+        this.nama = nama;
+        this.saldo = saldo; // Jumlah saldo yang dmiliki restoran
+        this.menu = new ArrayList<Menu>();
     }
     
+    /* Method ini digunakan jika Constructor
+     * yang dipilih menggunakan Constructor TP2
+     */
+    public void setSaldo(long saldo) {
+        this.saldo = saldo;
+    }
+    public long getSaldo() {
+        return saldo;
+    }
+
+    /* Method default */
     public String getNama() {
         return nama;
     }
+    public void addMenu(Menu newMenu){
+        menu.add(newMenu);
+    }
+    public ArrayList<Menu> getMenu() {
+        return menu;
+    }
 
-    // TODO: tambahkan methods yang diperlukan untuk class ini
+    private ArrayList<Menu> sortMenu(){
+        Menu[] menuArr = new Menu[menu.size()];
+        for(int i=0; i < menu.size();i++){
+            menuArr[i] = menu.get(i);
+        }
+        int n = menuArr.length;
+        for (int i = 0; i < n-1; i++) {
+            for (int j = 0; j < n-i-1; j++) {
+                if (menuArr[j].getHarga() > menuArr[j+1].getHarga()) {
+                    
+                    Menu temp = menuArr[j];
+                    menuArr[j] = menuArr[j+1];
+                    menuArr[j+1] = temp;
+                }
+            }
+        }
+        return new ArrayList<>(Arrays.asList(menuArr));
+    }
+    public String printMenu() {
+        StringBuilder menuString = new StringBuilder("Menu:\n");
+        DecimalFormat decimalFormat = new DecimalFormat();
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('\u0000');
+        decimalFormat.setDecimalFormatSymbols(symbols);
+        int menuNumber = 1;
+        for (Menu menuItem : sortMenu()) {
+            menuString.append(menuNumber).append(". ").append(menuItem.getNamaMakanan()).append(" ").append(decimalFormat.format(menuItem.getHarga())).append("\n");
+            menuNumber++;
+        }
+        if (menuString.length() > 0) {
+            menuString.deleteCharAt(menuString.length() - 1);
+        }
+        return menuString.toString();
+    }
 }
