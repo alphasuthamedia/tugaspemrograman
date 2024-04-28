@@ -90,7 +90,21 @@ public class MainMenu {
                     }
                 }
             } else {
+                System.out.println("Selamat datang " + userLoggedIn.getNama());
                 CustomerSystemCLI customerSystemCLI = (CustomerSystemCLI) loginManager.getSystem(userLoggedIn.role);
+
+                boolean controller = true;
+                while (controller) {
+                    customerSystemCLI.displayMenu();
+                    int menuSelector = input.nextInt();
+                    input.nextLine(); // flush
+
+                    customerSystemCLI.setUserLoggedIn(userLoggedIn); // set userLoggedIn
+                    customerSystemCLI.setTempUserList(userList); // set tempUserList --> jika ada perubahan pada useList tidak akan mempengaruhi tempUserList karena dynamic variable
+                    customerSystemCLI.setRestoList(restoList); // set restoList
+                    controller = customerSystemCLI.handleMenu(menuSelector);
+                    
+                }
             }
 
             
