@@ -12,6 +12,8 @@ import assignments.assignment2.Menu;
 import assignments.assignment2.Order;
 import assignments.assignment2.Restaurant;
 import assignments.assignment2.User;
+import assignments.assignment3.payment.CreditCardPayment;
+import assignments.assignment3.payment.DebitPayment;
 
 public class CustomerSystemCLI extends UserSystemCLI {
     private static ArrayList<User> tempUserList;
@@ -109,7 +111,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
                 continue;
             }
             System.out.println("");
-            System.out.print(outputBillPesanan(order));
+            System.out.print(outputBillPesanan(order)+"\n");
             return;
         }
     }
@@ -125,13 +127,56 @@ public class CustomerSystemCLI extends UserSystemCLI {
                 System.out.println("Restoran tidak terdaftar pada sistem.\n");
                 continue;
             }
-            System.out.print(restaurant.printMenu());
+            System.out.print(restaurant.printMenu()+"\n");
             return;
         }
     }
 
     void handleBayarBill(){
-        // TODO: Implementasi method untuk handle ketika customer ingin melihat menu
+        System.out.println("--------------Bayar Bill----------------");
+        String orderId = ""; // temporary agar bisa digunakan selanjutnya
+        Order order = new Order(); // temporary agar bisa digunakan selanjutnya
+        while (true) {
+            System.out.print("Masukkan Order ID: ");
+            orderId = input.nextLine().trim();
+            order = getOrderOrNull(orderId);
+            if(order == null){
+                System.out.println("Order ID tidak dapat ditemukan.\n");
+                continue;
+            }
+            if (condition) {
+                
+            }
+            System.out.println("");
+            System.out.print(outputBillPesanan(order)+"\n");
+            return;
+        }
+
+        System.out.println("Opsi Pembayaran:");
+        System.out.println("1. Credit Card");
+        System.out.println("2. Debit");
+
+        System.out.print("Pilihan Metode Pembayaran: ");
+        int pilihanPembayaranUser = input.nextInt();
+        input.nextLine(); // flush
+        
+        if ((pilihanPembayaranUser == 1) && (userLoggedIn.getPaymentSystem() instanceof CreditCardPayment)) {
+            System.out.println("KONTOLLLLLLL");
+        } else if ((pilihanPembayaranUser == 2) && (userLoggedIn.getPaymentSystem() instanceof DebitPayment)) {
+            if (!(DebitPayment.isPassedMinimumTotalPrice(userLoggedIn.getSaldo()))){
+                System.out.println("Jumlah pesanan < 50000 mohon menggunakan metode pembayaran yang lain");
+            } else if (order.getTotalHarga() > userLoggedIn.getSaldo()) {
+                System.out.println("Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain");
+            }{
+                
+            }
+            System.out.println("KINTILLLLLLL");
+        } else if ((pilihanPembayaranUser == 1) && (!(userLoggedIn.getPaymentSystem() instanceof CreditCardPayment))) {
+            System.out.println("User belum memiliki metode pembayaran ini!");
+        } else if ((pilihanPembayaranUser == 2) && (!(userLoggedIn.getPaymentSystem() instanceof DebitPayment))) {
+            System.out.println("User belum memiliki metode pembayaran ini!");
+        }
+
     }
 
     public void handleUpdateStatusPesanan(){
