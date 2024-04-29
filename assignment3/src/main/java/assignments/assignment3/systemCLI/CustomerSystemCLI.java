@@ -111,7 +111,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
                 continue;
             }
             System.out.println("");
-            System.out.print(outputBillPesanan(order)+"\n");
+            System.out.print(outputBillPesanan(order));
             return;
         }
     }
@@ -122,7 +122,6 @@ public class CustomerSystemCLI extends UserSystemCLI {
             System.out.print("Nama Restoran: ");
             String restaurantName = input.nextLine().trim();
             Restaurant restaurant = getRestaurantByName(restaurantName);
-            System.out.println();
             if(restaurant == null){
                 System.out.println("Restoran tidak terdaftar pada sistem.\n");
                 continue;
@@ -134,12 +133,10 @@ public class CustomerSystemCLI extends UserSystemCLI {
 
     void handleBayarBill(){
         System.out.println("--------------Bayar Bill----------------");
-        String orderId = ""; // temporary agar bisa digunakan selanjutnya
-        Order order = new Order(); // temporary agar bisa digunakan selanjutnya
         while (true) {
             System.out.print("Masukkan Order ID: ");
-            orderId = input.nextLine().trim();
-            order = getOrderOrNull(orderId);
+            String orderId = input.nextLine().trim();
+            Order order = getOrderOrNull(orderId); // temporary agar bisa digunakan selanjutnya
             if(order == null){
                 System.out.println("Order ID tidak dapat ditemukan.\n");
                 continue;
@@ -150,41 +147,51 @@ public class CustomerSystemCLI extends UserSystemCLI {
                 System.out.println("");
                 System.out.print(outputBillPesanan(order)+"\n");
             }
-            return;
+            System.out.println("Opsi Pembayaran:");
+            System.out.println("1. Credit Card");
+            System.out.println("2. Debit");
+    
+            System.out.print("Pilihan Metode Pembayaran: ");
+            int pilihanPembayaranUser = input.nextInt();
+            input.nextLine(); // flush
+            
+            if ((pilihanPembayaranUser == 1) && (userLoggedIn.getPaymentSystem() instanceof CreditCardPayment)) {
+                if (order.getTotalHarga() > userLoggedIn.getSaldo()) {
+                    System.out.println("Saldo tidak mencukupi mohon menggunakan metode pamabayaran yang lain");
+                    return;
+                } else {
+                    CreditCardPayment creditCardPayment = new CreditCardPayment(); // masukkan payment kartu kredit
+                    userLoggedIn.setSaldo(userLoggedIn.getSaldo() - creditCardPayment.processPayment((long) order.getTotalHarga())); // kurangkan saldo user karena telah berhasil membayar
+                    order.setOrderFinished(true);
+                    System.out.println("Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga() +
+                                        " dengan biaya transaksi sebesar " + (-((long) order.getTotalHarga() - creditCardPayment.processPayment((long) order.getTotalHarga()))));
+                    return;
+                }
+            } else if ((pilihanPembayaranUser == 2) && (userLoggedIn.getPaymentSystem() instanceof DebitPayment)) {
+                DebitPayment debitPayment = new DebitPayment();
+                if (debitPayment.processPayment(userLoggedIn.getSaldo()) == 1){
+                    System.out.println("Jumlah pesanan < 50000 mohon menggunakan metode pembayaran yang lain\n");
+                    return;
+                } else if (order.getTotalHarga() > userLoggedIn.getSaldo()) {
+                    System.out.println("Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain\n");
+                    return;
+                } else {
+                    // long currentUserTotalHargaPesanan = debitPayment.processPayment((long) order.getTotalHarga());
+                    userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - order.getTotalHarga())); // kurangkan saldo user karena telah berhasil membayar
+                    order.setOrderFinished(true);
+                    System.out.println("Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga());
+                    return;
+                }
+            } else if ((pilihanPembayaranUser == 1) && (!(userLoggedIn.getPaymentSystem() instanceof CreditCardPayment))) {
+                System.out.println("User belum memiliki metode pembayaran ini!\n");
+                return;
+            } else if ((pilihanPembayaranUser == 2) && (!(userLoggedIn.getPaymentSystem() instanceof DebitPayment))) {
+                System.out.println("User belum memiliki metode pembayaran ini!\n");
+                return;
+            }    
         }
 
-        System.out.println("Opsi Pembayaran:");
-        System.out.println("1. Credit Card");
-        System.out.println("2. Debit");
-
-        System.out.print("Pilihan Metode Pembayaran: ");
-        int pilihanPembayaranUser = input.nextInt();
-        input.nextLine(); // flush
-        
-        if ((pilihanPembayaranUser == 1) && (userLoggedIn.getPaymentSystem() instanceof CreditCardPayment)) {
-            if (order.getTotalHarga() > userLoggedIn.getSaldo()) {
-                System.out.println("Saldo tidak mencukupi mohon menggunakan metode pamabayaran yang lain");
-            } else {
-                long curretUserTotalHargaPesanan = CreditCardPayment.processPayment(order.getTotalHarga());
-                userLoggedIn.setSaldo(userLoggedIn.getSaldo() - curretUserTotalHargaPesanan); // kurangkan saldo user karena telah berhasil membayar
-                order.setOrderFinished(true);
-            }
-        } else if ((pilihanPembayaranUser == 2) && (userLoggedIn.getPaymentSystem() instanceof DebitPayment)) {
-            if (!(DebitPayment.isPassedMinimumTotalPrice(userLoggedIn.getSaldo()))){
-                System.out.println("Jumlah pesanan < 50000 mohon menggunakan metode pembayaran yang lain");
-            } else if (order.getTotalHarga() > userLoggedIn.getSaldo()) {
-                System.out.println("Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain");
-            } else {
-                userLoggedIn.setSaldo(userLoggedIn.getSaldo() - order.getTotalHarga()); // kurangkan saldo user karena telah berhasil membayar
-                order.setOrderFinished(true);
-            }
-            System.out.println("KINTILLLLLLL");
-        } else if ((pilihanPembayaranUser == 1) && (!(userLoggedIn.getPaymentSystem() instanceof CreditCardPayment))) {
-            System.out.println("User belum memiliki metode pembayaran ini!");
-        } else if ((pilihanPembayaranUser == 2) && (!(userLoggedIn.getPaymentSystem() instanceof DebitPayment))) {
-            System.out.println("User belum memiliki metode pembayaran ini!");
-        }
-
+      
     }
 
     public void handleUpdateStatusPesanan(){
