@@ -8,4 +8,5 @@ run {
 
 dependencies {
     implementation project(":assignment1");
+    implementation project(":assignment3")
 }
