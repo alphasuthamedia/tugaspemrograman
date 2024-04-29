@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class Restaurant {
     private String nama;
     private ArrayList<Menu> menu;
-    private long saldo; // Jumlah saldo yang dmiliki restoran
+    private long saldo = 0; // Jumlah saldo yang dmiliki restoran | sementara 0
 
     /* Constructor solusi TP2 */
     public Restaurant(String nama){
@@ -27,7 +27,7 @@ public class Restaurant {
      * yang dipilih menggunakan Constructor TP2
      */
     public void setSaldo(long saldo) {
-        this.saldo = saldo;
+        this.saldo += saldo;
     }
     public long getSaldo() {
         return saldo;

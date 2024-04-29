@@ -6,7 +6,13 @@ public class CreditCardPayment implements DepeFoodPaymentSystem{
 
     @Override
     public long processPayment(long amount) {
-        return (long) (amount + (amount * TRANSACTION_FEE_PERCETAGE));
+        if (checkerSaldoMemenuhi(amount)) {
+            // Jika saldo tercukupi langsung return total harganya yang telah ditambah dengan tax
+            return (long) (amount + (amount * TRANSACTION_FEE_PERCETAGE));
+        } else {
+            System.out.println("Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain");
+            return 0;
+        }
     }
     
     @Override
@@ -17,5 +23,9 @@ public class CreditCardPayment implements DepeFoodPaymentSystem{
     @Override
     public long getSaldo(long saldo) {
         return saldo;
+    }
+
+    public boolean checkerSaldoMemenuhi(long ammount){
+        return saldo >= ammount;
     }
 }

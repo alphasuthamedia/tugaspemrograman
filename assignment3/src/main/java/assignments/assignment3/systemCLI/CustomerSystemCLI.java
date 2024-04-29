@@ -29,7 +29,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
             case 2 -> handleCetakBill();
             case 3 -> handleLihatMenu();
             case 4 -> handleBayarBill();
-            case 5 -> handleUpdateStatusPesanan(); // template mungkin salah, seharusnya cek saldo
+            case 5 -> handleCekSaldo(); // template mungkin salah, seharusnya cek saldo
             case 6 -> {
                 return false;
             }
@@ -101,7 +101,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
     }
 
     void handleCetakBill(){
-        System.out.println("--------------Cetak Bill----------------");
+        System.out.println("----------------Cetak Bill------------------");
         while (true) {
             System.out.print("Masukkan Order ID: ");
             String orderId = input.nextLine().trim();
@@ -132,7 +132,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
     }
 
     void handleBayarBill(){
-        System.out.println("--------------Bayar Bill----------------");
+        System.out.println("----------------Bayar Bill------------------");
         while (true) {
             System.out.print("Masukkan Order ID: ");
             String orderId = input.nextLine().trim();
@@ -156,37 +156,34 @@ public class CustomerSystemCLI extends UserSystemCLI {
             input.nextLine(); // flush
             
             if ((pilihanPembayaranUser == 1) && (userLoggedIn.getPaymentSystem() instanceof CreditCardPayment)) {
-                if (order.getTotalHarga() > userLoggedIn.getSaldo()) {
-                    System.out.println("Saldo tidak mencukupi mohon menggunakan metode pamabayaran yang lain");
-                    return;
-                } else {
-                    CreditCardPayment creditCardPayment = new CreditCardPayment(); // masukkan payment kartu kredit
-                    userLoggedIn.setSaldo(userLoggedIn.getSaldo() - creditCardPayment.processPayment((long) order.getTotalHarga())); // kurangkan saldo user karena telah berhasil membayar
-                    order.setOrderFinished(true);
+                CreditCardPayment creditCardPayment = new CreditCardPayment();
+                creditCardPayment.setSaldo((long) userLoggedIn.getSaldo()); // set saldo di creditCardPayment yang berasal dari saldo credit card user
+                long hasilProsesPembayaran = creditCardPayment.processPayment((long) order.getTotalHarga()); // harga total yang harus dibayarkan setelah ditambah tax
+                if (hasilProsesPembayaran != 0) {
+                    order.getRestaurant().setSaldo((long) (hasilProsesPembayaran - hasilProsesPembayaran*0.02));
+                    userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - creditCardPayment.processPayment((long) order.getTotalHarga()))); // hitung saldo user yang sekarang yang telah dikurangi dengan harga bayar
+                    order.setOrderFinished(true); // order telah finished (sudah terbayarkan)
                     System.out.println("Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga() +
                                         " dengan biaya transaksi sebesar " + (-((long) order.getTotalHarga() - creditCardPayment.processPayment((long) order.getTotalHarga()))));
-                    return;
                 }
+                return;
+                // }
             } else if ((pilihanPembayaranUser == 2) && (userLoggedIn.getPaymentSystem() instanceof DebitPayment)) {
                 DebitPayment debitPayment = new DebitPayment();
-                if (debitPayment.processPayment(userLoggedIn.getSaldo()) == 1){
-                    System.out.println("Jumlah pesanan < 50000 mohon menggunakan metode pembayaran yang lain\n");
-                    return;
-                } else if (order.getTotalHarga() > userLoggedIn.getSaldo()) {
-                    System.out.println("Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain\n");
-                    return;
-                } else {
-                    // long currentUserTotalHargaPesanan = debitPayment.processPayment((long) order.getTotalHarga());
-                    userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - order.getTotalHarga())); // kurangkan saldo user karena telah berhasil membayar
-                    order.setOrderFinished(true);
-                    System.out.println("Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga());
-                    return;
+                debitPayment.setSaldo((long) userLoggedIn.getSaldo());
+                long hasilProsesPembayaran = debitPayment.processPayment((long) order.getTotalHarga());
+                if (hasilProsesPembayaran != 0) {
+                    order.setOrderFinished(true); // set ordernya sudah finished (sudah terbayarkan)
+                    order.getRestaurant().setSaldo(hasilProsesPembayaran); // tambahkan saldo restoran tanpa dikurangi tax
+                    userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - order.getTotalHarga())); // set saldo user yang baru setelah dikurangi pembelian
+                    System.out.println("Berhasil Membayar Bill sebesar Rp " + hasilProsesPembayaran);
                 }
+                return;
             } else if ((pilihanPembayaranUser == 1) && (!(userLoggedIn.getPaymentSystem() instanceof CreditCardPayment))) {
-                System.out.println("User belum memiliki metode pembayaran ini!\n");
+                System.out.println("User belum memiliki metode pembayaran ini!");
                 return;
             } else if ((pilihanPembayaranUser == 2) && (!(userLoggedIn.getPaymentSystem() instanceof DebitPayment))) {
-                System.out.println("User belum memiliki metode pembayaran ini!\n");
+                System.out.println("User belum memiliki metode pembayaran ini!");
                 return;
             }    
         }
@@ -194,7 +191,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
       
     }
 
-    public void handleUpdateStatusPesanan(){
+    public void handleCekSaldo(){
         System.out.println("\nSisa saldo sebesar Rp " + userLoggedIn.getSaldo());
     }
 

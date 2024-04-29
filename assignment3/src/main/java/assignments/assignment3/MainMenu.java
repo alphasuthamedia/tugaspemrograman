@@ -107,7 +107,7 @@ public class MainMenu {
                 }
             }
         } else {
-            System.out.println("User tidak ditemukan.");
+            System.out.println("User tidak ditemukan.\n");
             return;
         }
     }
