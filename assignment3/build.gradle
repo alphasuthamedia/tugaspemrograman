@@ -7,6 +7,5 @@ run {
 }
 
 dependencies {
-    implementation project(':assignment1')
-    implementation project(':assignment2')
+    implementation project(':assignment2');
 }
