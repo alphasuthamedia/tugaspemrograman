@@ -143,7 +143,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
             }
             if (order.getOrderFinished()) {
                 System.out.println("Pesanan dengan ID ini sudah lunas!");
-                return;
+                return; // keluar jika pesanan sudah lunas
             } else {
                 System.out.println("");
                 System.out.print(outputBillPesanan(order)+"\n");
