@@ -160,7 +160,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
                 creditCardPayment.setSaldo((long) userLoggedIn.getSaldo()); // set saldo di creditCardPayment yang berasal dari saldo credit card user
                 long hasilProsesPembayaran = creditCardPayment.processPayment((long) order.getTotalHarga()); // harga total yang harus dibayarkan setelah ditambah tax
                 if (hasilProsesPembayaran != 0) {
-                    order.getRestaurant().setSaldo((long) (hasilProsesPembayaran - hasilProsesPembayaran*0.02));
+                    order.getRestaurant().setSaldo((long) (hasilProsesPembayaran));
                     userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - creditCardPayment.processPayment((long) order.getTotalHarga()))); // hitung saldo user yang sekarang yang telah dikurangi dengan harga bayar
                     order.setOrderFinished(true); // order telah finished (sudah terbayarkan)
                     System.out.println("Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga() +
