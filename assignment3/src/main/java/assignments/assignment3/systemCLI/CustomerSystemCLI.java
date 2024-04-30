@@ -53,7 +53,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
     }
 
     public void handleBuatPesanan(){
-        System.out.println("--------------Buat Pesanan----------------");
+        System.out.println("---------------Buat Pesanan-----------------");
         while (true) {
             System.out.print("Nama Restoran: ");
             String restaurantName = input.nextLine().trim();
