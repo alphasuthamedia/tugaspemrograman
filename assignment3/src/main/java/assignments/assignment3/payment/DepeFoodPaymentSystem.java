@@ -7,5 +7,5 @@ public interface DepeFoodPaymentSystem {
 
     public abstract void setSaldo(long saldo);
     
-    public abstract long getSaldo(long saldo);
+    public abstract long getSaldo();
 }

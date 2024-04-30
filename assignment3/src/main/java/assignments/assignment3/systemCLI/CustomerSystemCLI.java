@@ -8,10 +8,10 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import assignments.assignment1.OrderGenerator;
-import assignments.assignment2.Menu;
-import assignments.assignment2.Order;
-import assignments.assignment2.Restaurant;
-import assignments.assignment2.User;
+import assignments.assignment3.Menu;
+import assignments.assignment3.Order;
+import assignments.assignment3.Restaurant;
+import assignments.assignment3.User;
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
 

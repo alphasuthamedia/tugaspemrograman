@@ -21,7 +21,7 @@ public class CreditCardPayment implements DepeFoodPaymentSystem{
     }
 
     @Override
-    public long getSaldo(long saldo) {
+    public long getSaldo() {
         return saldo;
     }
 

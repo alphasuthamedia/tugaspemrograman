@@ -252,10 +252,10 @@ public class MainMenu {
             String newStatus = input.nextLine().trim();
             if(newStatus.toLowerCase().equals("SELESAI".toLowerCase())){
                 if(order.getOrderFinished() == true){
-                    System.out.printf("Status pesanan dengan ID %s tidak berhasil diupdate!", order.getOrderId().toUp);
+                    System.out.printf("Status pesanan dengan ID %s tidak berhasil diupdate!", order.getOrderId().toUpperCase());
                 }
                 else{
-                    System.out.printf("Status pesanan dengan ID %s berhasil diupdate!", order.getOrderId().toUp);
+                    System.out.printf("Status pesanan dengan ID %s berhasil diupdate!", order.getOrderId().toUpperCase());
                     order.setOrderFinished(true);
                 }
             }

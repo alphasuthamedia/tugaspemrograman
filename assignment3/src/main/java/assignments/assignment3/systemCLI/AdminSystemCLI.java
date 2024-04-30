@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import assignments.assignment2.Menu;
-import assignments.assignment2.Restaurant;
+import assignments.assignment3.Menu;
+import assignments.assignment3.Restaurant;
 
 public class AdminSystemCLI extends UserSystemCLI{
     private static ArrayList<Restaurant> tempRestoList = new ArrayList<>();
