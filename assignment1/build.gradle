@@ -5,8 +5,3 @@ application {
 run {
     standardInput = System.in
 }
-
-dependencies {
-    implementation project(':assignment3')
-    implementation project(':assignment2')
-}
