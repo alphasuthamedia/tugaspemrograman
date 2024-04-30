@@ -143,6 +143,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
             }
             if (order.getOrderFinished()) {
                 System.out.println("Pesanan dengan ID ini sudah lunas!");
+                return;
             } else {
                 System.out.println("");
                 System.out.print(outputBillPesanan(order)+"\n");
@@ -185,7 +186,6 @@ public class CustomerSystemCLI extends UserSystemCLI {
                     System.out.println("User belum memiliki metode pembayaran ini!");
                     return;
                 }
-
                 return;
             }
         }
