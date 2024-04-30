@@ -146,46 +146,48 @@ public class CustomerSystemCLI extends UserSystemCLI {
             } else {
                 System.out.println("");
                 System.out.print(outputBillPesanan(order)+"\n");
+                
+                System.out.println("Opsi Pembayaran:");
+                System.out.println("1. Credit Card");
+                System.out.println("2. Debit");
+        
+                System.out.print("Pilihan Metode Pembayaran: ");
+                int pilihanPembayaranUser = input.nextInt();
+                input.nextLine(); // flush
+                
+                if ((pilihanPembayaranUser == 1) && (userLoggedIn.getPaymentSystem() instanceof CreditCardPayment)) {
+                    CreditCardPayment creditCardPayment = new CreditCardPayment();
+                    creditCardPayment.setSaldo((long) userLoggedIn.getSaldo()); // set saldo di creditCardPayment yang berasal dari saldo credit card user
+                    long hasilProsesPembayaran = creditCardPayment.processPayment((long) order.getTotalHarga()); // harga total yang harus dibayarkan setelah ditambah tax
+                    if (hasilProsesPembayaran != 0) {
+                        order.getRestaurant().setSaldo((long) (hasilProsesPembayaran));
+                        userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - creditCardPayment.processPayment((long) order.getTotalHarga()))); // hitung saldo user yang sekarang yang telah dikurangi dengan harga bayar
+                        order.setOrderFinished(true); // order telah finished (sudah terbayarkan)
+                        System.out.println("Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga() +
+                                            " dengan biaya transaksi sebesar " + (-((long) order.getTotalHarga() - creditCardPayment.processPayment((long) order.getTotalHarga()))));
+                    }
+                    return;
+                } else if ((pilihanPembayaranUser == 2) && (userLoggedIn.getPaymentSystem() instanceof DebitPayment)) {
+                    DebitPayment debitPayment = new DebitPayment();
+                    debitPayment.setSaldo((long) userLoggedIn.getSaldo());
+                    long hasilProsesPembayaran = debitPayment.processPayment((long) order.getTotalHarga());
+                    if (hasilProsesPembayaran != 0) {
+                        order.setOrderFinished(true); // set ordernya sudah finished (sudah terbayarkan)
+                        order.getRestaurant().setSaldo(hasilProsesPembayaran); // tambahkan saldo restoran tanpa dikurangi tax
+                        userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - order.getTotalHarga())); // set saldo user yang baru setelah dikurangi pembelian
+                        System.out.println("Berhasil Membayar Bill sebesar Rp " + hasilProsesPembayaran);
+                    }
+                    return;
+                } else if ((pilihanPembayaranUser == 1) && (!(userLoggedIn.getPaymentSystem() instanceof CreditCardPayment))) {
+                    System.out.println("User belum memiliki metode pembayaran ini!");
+                    return;
+                } else if ((pilihanPembayaranUser == 2) && (!(userLoggedIn.getPaymentSystem() instanceof DebitPayment))) {
+                    System.out.println("User belum memiliki metode pembayaran ini!");
+                    return;
+                }
+
+                return;
             }
-            System.out.println("Opsi Pembayaran:");
-            System.out.println("1. Credit Card");
-            System.out.println("2. Debit");
-    
-            System.out.print("Pilihan Metode Pembayaran: ");
-            int pilihanPembayaranUser = input.nextInt();
-            input.nextLine(); // flush
-            
-            if ((pilihanPembayaranUser == 1) && (userLoggedIn.getPaymentSystem() instanceof CreditCardPayment)) {
-                CreditCardPayment creditCardPayment = new CreditCardPayment();
-                creditCardPayment.setSaldo((long) userLoggedIn.getSaldo()); // set saldo di creditCardPayment yang berasal dari saldo credit card user
-                long hasilProsesPembayaran = creditCardPayment.processPayment((long) order.getTotalHarga()); // harga total yang harus dibayarkan setelah ditambah tax
-                if (hasilProsesPembayaran != 0) {
-                    order.getRestaurant().setSaldo((long) (hasilProsesPembayaran));
-                    userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - creditCardPayment.processPayment((long) order.getTotalHarga()))); // hitung saldo user yang sekarang yang telah dikurangi dengan harga bayar
-                    order.setOrderFinished(true); // order telah finished (sudah terbayarkan)
-                    System.out.println("Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga() +
-                                        " dengan biaya transaksi sebesar " + (-((long) order.getTotalHarga() - creditCardPayment.processPayment((long) order.getTotalHarga()))));
-                }
-                return;
-                // }
-            } else if ((pilihanPembayaranUser == 2) && (userLoggedIn.getPaymentSystem() instanceof DebitPayment)) {
-                DebitPayment debitPayment = new DebitPayment();
-                debitPayment.setSaldo((long) userLoggedIn.getSaldo());
-                long hasilProsesPembayaran = debitPayment.processPayment((long) order.getTotalHarga());
-                if (hasilProsesPembayaran != 0) {
-                    order.setOrderFinished(true); // set ordernya sudah finished (sudah terbayarkan)
-                    order.getRestaurant().setSaldo(hasilProsesPembayaran); // tambahkan saldo restoran tanpa dikurangi tax
-                    userLoggedIn.setSaldo((long) (userLoggedIn.getSaldo() - order.getTotalHarga())); // set saldo user yang baru setelah dikurangi pembelian
-                    System.out.println("Berhasil Membayar Bill sebesar Rp " + hasilProsesPembayaran);
-                }
-                return;
-            } else if ((pilihanPembayaranUser == 1) && (!(userLoggedIn.getPaymentSystem() instanceof CreditCardPayment))) {
-                System.out.println("User belum memiliki metode pembayaran ini!");
-                return;
-            } else if ((pilihanPembayaranUser == 2) && (!(userLoggedIn.getPaymentSystem() instanceof DebitPayment))) {
-                System.out.println("User belum memiliki metode pembayaran ini!");
-                return;
-            }    
         }
 
       
