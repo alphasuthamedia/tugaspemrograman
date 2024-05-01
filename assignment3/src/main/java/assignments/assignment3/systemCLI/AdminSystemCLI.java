@@ -107,7 +107,7 @@ public class AdminSystemCLI extends UserSystemCLI{
     }
     
     /* Method ini digunakan untuk mendapatkan nama restoran yang valid
-     * method ini mengembalikan nama restoran yang valid setelah di cek berkali kali
+     * method ini mengembalikan nama restoran yang valid setelah di cek berkali
      */
     public static String getValidRestaurantName() {
         String name = "";
