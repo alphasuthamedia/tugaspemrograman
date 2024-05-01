@@ -81,7 +81,6 @@ public class User {
     }
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return String.format("User dengan nama %s dan nomor telepon %s", nama, nomorTelepon);
     }
 
