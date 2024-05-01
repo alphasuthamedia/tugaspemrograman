@@ -11,6 +11,7 @@ public class AdminSystemCLI extends UserSystemCLI{
     private static ArrayList<Restaurant> tempRestoList = new ArrayList<>();
     private static Scanner input = new Scanner(System.in);
 
+    /* Method ini digunakan untuk menghandle menu apa yang dipilih oleh user */
     @Override
     public boolean handleMenu(int command){
         switch(command){
@@ -33,6 +34,7 @@ public class AdminSystemCLI extends UserSystemCLI{
         System.out.print("Pilihan menu: ");
     }
 
+    /* Method ini menghandle tambah restoran */
     protected void handleTambahRestoran(){
         System.out.println("--------------Tambah Restoran---------------");
         Restaurant restaurant = null;
@@ -45,6 +47,7 @@ public class AdminSystemCLI extends UserSystemCLI{
         System.out.print("Restaurant "+restaurant.getNama()+" Berhasil terdaftar." );
     }
 
+    /* Method ini menghandle hapus restoran */
     protected void handleHapusRestoran(){
         System.out.println("--------------Hapus Restoran----------------");
         boolean isActionDeleteEnded = false;
@@ -64,10 +67,14 @@ public class AdminSystemCLI extends UserSystemCLI{
         }
     }
 
+    /* Method ini digunakan untuk mengembalikan list restoran yang sudah di adjust jika diperlukan
+     * @return ArrayList<Restaurant> list restoran yang sudah di adjust
+    */
     public ArrayList<Restaurant> adjustRestaurants(){
         return tempRestoList;
     }
 
+    /* Method ini digunakan untuk menghandle tambah menu restoran */
     public static Restaurant handleTambahMenuRestaurant(Restaurant restoran){
         System.out.print("Jumlah Makanan: ");
         int  jumlahMenu = Integer.parseInt(input.nextLine().trim());
@@ -94,10 +101,14 @@ public class AdminSystemCLI extends UserSystemCLI{
         return isMenuValid? restoran : null; 
     }
 
+    /* Method ini digunakan untuk mengecek apakah string yang dimasukkan adalah digit atau bukan */
     public static boolean checkIsDigit(String digits){
         return  digits.chars().allMatch(Character::isDigit);
     }
     
+    /* Method ini digunakan untuk mendapatkan nama restoran yang valid
+     * method ini mengembalikan nama restoran yang valid setelah di cek berkali kali
+     */
     public static String getValidRestaurantName() {
         String name = "";
         boolean isRestaurantNameValid = false;

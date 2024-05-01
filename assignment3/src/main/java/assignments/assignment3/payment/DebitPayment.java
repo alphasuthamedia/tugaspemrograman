@@ -5,6 +5,7 @@ public class DebitPayment implements DepeFoodPaymentSystem{
     private static final double MINIMUM_TOTAL_PRICE = 50000;
 
     @Override
+    /* Override processPayment(long amount) yang ada di DepeFoodPaymentSystem */
     public long processPayment(long amount) {
         if (checkerMinimumTotalPriceTerpenuhi(amount)) {
             if (checkerSaldoMemenuhi(amount)) {
@@ -19,20 +20,24 @@ public class DebitPayment implements DepeFoodPaymentSystem{
         }
     }
     
+    /* Override processPayment(long amount) yang ada di DepeFoodPaymentSystem */
     @Override
     public void setSaldo(long saldo) {
         this.saldo = saldo;
     }
 
+    /* Override processPayment(long amount) yang ada di DepeFoodPaymentSystem */
     @Override
     public long getSaldo() {
         return saldo;
     }
 
+    /* cek apakah minimum harga pesanan terpenuhi */
     public boolean checkerMinimumTotalPriceTerpenuhi(long ammount){
         return ((ammount >= MINIMUM_TOTAL_PRICE) ? true : false);
     }
     
+    /* cek apakah saldo dari user terpenuhi */
     public boolean checkerSaldoMemenuhi(long ammount){
         return saldo >= ammount;
     }

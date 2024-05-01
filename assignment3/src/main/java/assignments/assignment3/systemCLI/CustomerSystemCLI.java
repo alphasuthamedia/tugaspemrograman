@@ -23,6 +23,9 @@ public class CustomerSystemCLI extends UserSystemCLI {
     private static Scanner input = new Scanner(System.in);
 
     @Override
+    /* Method ini akan menampilkan menu yang sesuai dengan role user
+     * oleh karena itu, method ini mengoverride class yang awal
+     */    
     public boolean handleMenu(int choice){
         switch(choice){
             case 1 -> handleBuatPesanan();
@@ -52,6 +55,12 @@ public class CustomerSystemCLI extends UserSystemCLI {
         System.out.print("Pilihan menu: ");
     }
 
+    /* Method ini menghandle buat pesanan dari user
+     * Method ini akan meminta input nama restoran, tanggal pemesanan, jumlah pesanan, dan menu yang dipesan
+     * Jika restoran tidak ditemukan, maka akan menampilkan pesan "Restoran tidak terdaftar pada sistem"
+     * seteleh itu, method ini akan membuat pesanan dan menambahkannya ke orderHistory di User
+     * 
+     */
     public void handleBuatPesanan(){
         System.out.println("---------------Buat Pesanan-----------------");
         while (true) {
@@ -99,7 +108,8 @@ public class CustomerSystemCLI extends UserSystemCLI {
             return;
         }
     }
-
+    
+    /* Method ini mencetak bill dari orderID yang diberikan oleh user */
     void handleCetakBill(){
         System.out.println("----------------Cetak Bill------------------");
         while (true) {
@@ -116,6 +126,10 @@ public class CustomerSystemCLI extends UserSystemCLI {
         }
     }
 
+    /* Method ini menghandle lihat menu dari user
+     * Method ini akan meminta input nama restoran
+     * Jika restoran tidak ditemukan, maka akan menampilkan pesan "Restoran tidak terdaftar pada sistem"
+     * seteleh itu */
     void handleLihatMenu(){
         System.out.println("--------------Lihat Menu----------------");
         while (true) {
@@ -131,6 +145,11 @@ public class CustomerSystemCLI extends UserSystemCLI {
         }
     }
 
+    /* Method ini menghandle bayar bill dari user
+     * Method ini bekerja seperti handleCetakBill, namun setelah menampilkan menu, user akan diminta untuk memilih metode pembayaran
+     * selain itu jika user belum memiliki metode pembayaran yang sesuai, maka akan menampilkan pesan "User belum memiliki metode pembayaran ini"
+     * selain itu, jika user sudah membayar bill, maka akan menampilkan pesan "Pesanan dengan ID ini sudah lunas!" tidak mecnetak bill lagi
+     * */
     void handleBayarBill(){
         System.out.println("----------------Bayar Bill------------------");
         while (true) {
@@ -143,7 +162,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
             }
             if (order.getOrderFinished()) {
                 System.out.println("Pesanan dengan ID ini sudah lunas!");
-                return; // keluar jika pesanan sudah lunas
+                return; // keluar jika pesanan sudah
             } else {
                 System.out.println("");
                 System.out.print(outputBillPesanan(order)+"\n");
@@ -193,23 +212,32 @@ public class CustomerSystemCLI extends UserSystemCLI {
       
     }
 
+    /* Method ini menghandle cek saldo dari user */
     public void handleCekSaldo(){
         System.out.println("\nSisa saldo sebesar Rp " + userLoggedIn.getSaldo());
     }
 
+    /* UserLoggedIn telah diperbaharui dalam class MainMenu harus di pass ke CustomerSystemCLI
+     * akibatnya, kita harus mengset userLoggedIn di kelas ini
+    */
     public void setUserLoggedIn(User userLoggedIn) {
         this.userLoggedIn = userLoggedIn;
     }
 
-    /* UserLoggedIn telah diperbaharui */
+    /* method ini digunakan untuk mendapatkan status usermana yang sedang loggedin*/
     public User getUserLoggedIn() {
         return userLoggedIn;
     }
 
+    /* Method ini digunakan untuk menambahkan restolist yang ada
+     * restolist berada di MainMenu dan diperbarui oleh class AdminSystemCLI
+     * oleh karena itu, kita harus mengupdate restolist di class ini
+     */
     public static void setRestoList(ArrayList<Restaurant> restoList) {
         CustomerSystemCLI.restoList = restoList;
     }
 
+    /* Method ini digunakan untuk mendapatkan restolist yang ada */
     public static Restaurant getRestaurantByName(String name){
         Optional<Restaurant> restaurantMatched = restoList.stream().filter(restoran -> restoran.getNama().toLowerCase().equals(name.toLowerCase())).findFirst();
         if(restaurantMatched.isPresent()){
@@ -218,12 +246,14 @@ public class CustomerSystemCLI extends UserSystemCLI {
         return null;
     }
 
+    /* Method ini dugnakan untuk validasi request pesanan */
     public static boolean validateRequestPesanan(Restaurant restaurant, List<String> listMenuPesananRequest){
         return listMenuPesananRequest.stream().allMatch(pesanan -> 
             restaurant.getMenu().stream().anyMatch(menu -> menu.getNamaMakanan().equals(pesanan))
         );
     }
 
+    /* Method ini dugunakan untuk meng get atau mendapatkan menu */
     public static Menu[] getMenuRequest(Restaurant restaurant, List<String> listMenuPesananRequest){
         Menu[] menu = new Menu[listMenuPesananRequest.size()];
         for(int i=0;i<menu.length;i++){
@@ -236,6 +266,9 @@ public class CustomerSystemCLI extends UserSystemCLI {
         return menu;
     }
 
+    /* Method ini digunakan untuk mendapatkan order berdasarkan orderID 
+     * jika order tidak ditemukan, maka akan mengembalikan null
+    */
     public static Order getOrderOrNull(String orderId) {
         for (User user : tempUserList) {
             for (Order order : user.getOrderHistory()) {
@@ -247,6 +280,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
         return null;
     }
 
+    /* Method ini digunakan untuk mendapatkan output pesanan */
     public static String getMenuPesananOutput(Order order){
         StringBuilder pesananBuilder = new StringBuilder();
         DecimalFormat decimalFormat = new DecimalFormat();
@@ -262,6 +296,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
         return pesananBuilder.toString();
     }
 
+    /* Method ini digunakan untuk mendapatkan output bill pesanan dalam bentuk return*/
     public static String outputBillPesanan(Order order) {
         DecimalFormat decimalFormat = new DecimalFormat();
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -287,6 +322,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
                          );
     }
 
+    /* Method ini digunakan untuk mendapatkan tempUserList yang diinisiasi lewat class MainMenu */
     public static void setTempUserList(ArrayList<User> argTempUserList) {
         tempUserList = argTempUserList;
     }

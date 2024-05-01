@@ -3,7 +3,10 @@ package assignments.assignment3;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import assignments.assignment3.User; // terkena circular dependency
+/* import yang disini mengacu ke paket 3 saja
+ * karena jika menggunakan paket 2 akan terkena circular dependency
+ */
+import assignments.assignment3.User;
 import assignments.assignment3.Restaurant;
 import assignments.assignment3.LoginManager;
 
@@ -25,18 +28,19 @@ public class MainMenu {
     }
 
     public static void main(String[] args) {
-
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-
         /* Insialisasi User dan restoList*/
         initUser();
         restoList = new ArrayList<Restaurant>();
 
+        /* inisiasikan dan Definisikan konstruktor pada objek mainMenu */
         MainMenu mainMenu = new MainMenu(new Scanner(System.in), new LoginManager(new AdminSystemCLI(), new CustomerSystemCLI()));
-        mainMenu.run();
+        mainMenu.run(); // jalankan mainMenu
     }
 
+    /* Prompt input dari user dan tampilkan menu utama
+     * Jika user memilih 1, maka user akan diarahkan ke menu login
+     * Jika user memilih 2, maka program akan berhenti
+    */
     public void run(){
         printHeader();
         boolean exit = false;
@@ -51,9 +55,15 @@ public class MainMenu {
             }
         }
 
-        input.close();
+        System.out.println("Terima kasih telah menggunakan DepeFood!");
+        input.close(); // tutup scanner karenan program sudah selesai
     }
 
+    /* Method login
+     * Method ini akan meminta input nama dan nomor telepon dari user yang sudah diinisialisasi sebelumnya
+     * Jika user ditemukan, maka user akan diarahkan ke menu yang sesuai dengan role user
+     * Jika user tidak ditemukan, maka akan menampilkan pesan "User tidak ditemukan"
+    */
     private void login(){
         System.out.println("\nSilakan Login:");
         System.out.print("Nama: ");
@@ -70,6 +80,10 @@ public class MainMenu {
 
             if (userLoggedIn.role.equals("Admin")) {
                 System.out.print("Selamat datang Admin!");
+
+                /* Inisisasi AdminSystemCLI 
+                 * get CLI yang sesuai dengan tipe user
+                */
                 AdminSystemCLI adminSystemCLI = (AdminSystemCLI) loginManager.getSystem(userLoggedIn.role);
 
                 boolean controller = true;
@@ -91,6 +105,10 @@ public class MainMenu {
                 }
             } else {
                 System.out.println("Selamat datang " + userLoggedIn.getNama());
+
+                /* Inisisasi AdminSystemCLI 
+                 * get CLI yang sesuai dengan tipe user
+                */
                 CustomerSystemCLI customerSystemCLI = (CustomerSystemCLI) loginManager.getSystem(userLoggedIn.role);
 
                 boolean controller = true;
@@ -107,7 +125,7 @@ public class MainMenu {
                 }
             }
         } else {
-            System.out.println("User tidak ditemukan.\n");
+            System.out.println("\"Pengguna dengan data tersebut tidak ditemukan!\n"); // jika user tidak ditemukan
             return;
         }
     }
@@ -135,7 +153,6 @@ public class MainMenu {
     public static void initUser(){
         userList = new ArrayList<User>();
 
-        //TODO: Adjust constructor dan atribut pada class User di Assignment 2
         userList.add(new User("Thomas N", "9928765403", "thomas.n@gmail.com", "P", "Customer", new DebitPayment(), 500000));
         userList.add(new User("Sekar Andita", "089877658190", "dita.sekar@gmail.com", "B", "Customer", new CreditCardPayment(), 2000000));
         userList.add(new User("Sofita Yasusa", "084789607222", "sofita.susa@gmail.com", "T", "Customer", new DebitPayment(), 750000));
