@@ -8,32 +8,11 @@ import java.util.Arrays;
 public class Restaurant {
     private String nama;
     private ArrayList<Menu> menu;
-    private long saldo = 0; // Jumlah saldo yang dmiliki restoran | sementara 0
-
-    /* Constructor solusi TP2 */
     public Restaurant(String nama){
         this.nama = nama;
-        this.menu = new ArrayList<Menu>();
-    }
-
-    /* Constructor yang disesuaikan dengan TP3 */
-    public Restaurant(String nama, long saldo){
-        this.nama = nama;
-        this.saldo = saldo; // Jumlah saldo yang dmiliki restoran
-        this.menu = new ArrayList<Menu>();
+        this.menu = new ArrayList<>();
     }
     
-    /* Method ini digunakan jika Constructor
-     * yang dipilih menggunakan Constructor TP2
-     */
-    public void setSaldo(long saldo) {
-        this.saldo += saldo;
-    }
-    public long getSaldo() {
-        return saldo;
-    }
-
-    /* Method default */
     public String getNama() {
         return nama;
     }

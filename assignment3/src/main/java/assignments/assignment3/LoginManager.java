@@ -17,15 +17,11 @@ public class LoginManager {
         this.customerSystem = customerSystem;
     }
 
-    /* Method ini meng get sistem apa yang sesuai dengan role yang dimasukkan
-     * jika role adalah "Admin" maka nanti akan akan mengembalikan CLI adminSystem (perlu di explicit cast)
-     * jika role adalah "Customer" maka nanti akan akan mengembalikan CLI customerSystem (perlu di explicit cast)
-     */
-    public UserSystemCLI getSystem(String role){
-        if(role != "Customer"){
-            return (UserSystemCLI) adminSystem;
-        }else{
-            return (UserSystemCLI) customerSystem;
+    public UserSystemCLI getSystem(String role) {
+        if (role.equals("Customer")) {
+            return customerSystem;
         }
+
+        return adminSystem;
     }
 }

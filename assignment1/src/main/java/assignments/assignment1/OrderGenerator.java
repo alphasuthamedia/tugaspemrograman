@@ -41,7 +41,7 @@ public class OrderGenerator {
     /*
      * Method ini digunakan untuk membuat ID
      * dari nama restoran, tanggal order, dan nomor telepon
-     * 
+     *
      * @return String Order ID dengan format sesuai pada dokumen soal
      */
     public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) {
@@ -59,7 +59,7 @@ public class OrderGenerator {
     /*
      * Method ini digunakan untuk membuat bill
      * dari order id dan lokasi
-     * 
+     *
      * @return String Bill dengan format sesuai di bawah:
      * Bill:
      * Order ID: [Order ID]
@@ -68,7 +68,6 @@ public class OrderGenerator {
      * Biaya Ongkos Kirim: [Total Ongkos Kirim]
      */
     public static String generateBill(String OrderID, String lokasi) {
-        lokasi = lokasi.toUpperCase();
         String formattedDate = OrderID.substring(4, 12);
         String tanggalPemesanan = formattedDate.substring(0, 2) + "/" + formattedDate.substring(2, 4) + "/"
                 + formattedDate.substring(4, 8);

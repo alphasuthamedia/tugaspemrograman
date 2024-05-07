@@ -1,7 +1,6 @@
 package assignments.assignment2;
 
 import java.util.ArrayList;
-import assignments.assignment3.payment.*;
 
 public class User {
     
@@ -10,45 +9,15 @@ public class User {
     private String email;
     private ArrayList<Order> orderHistory;
     public String role;
-    private DepeFoodPaymentSystem payment;
-    private String lokasi;
-    private long saldo;
 
-    /* Constructor Solusi TP2*/
+    private String lokasi;
     public User(String nama, String nomorTelepon, String email, String lokasi, String role){
         this.nama = nama;
         this.nomorTelepon = nomorTelepon;
         this.email = email;
         this.lokasi = lokasi;
         this.role = role;
-        orderHistory = new ArrayList<Order>();
-    }
-
-    /* Constructor yang disesuaikan TP3*/
-    public User(String nama, String nomorTelepon, String email, String lokasi, String role, DepeFoodPaymentSystem payment, long saldo){
-        this.nama = nama;
-        this.nomorTelepon = nomorTelepon;
-        this.email = email;
-        this.lokasi = lokasi;
-        this.role = role;
-        this.saldo = saldo; // Jumlah saldo yang dimiliki pengguna
-        this.payment = payment; // Methode payment yang digunakan oleh pengguna
-        orderHistory = new ArrayList<Order>();
-    }
-
-    /* Method ini digunakan jika Constructor
-     * yang dipilih menggunakan Constructor TP2
-     */
-    public void setPaymentSystem(DepeFoodPaymentSystem payment) {
-        this.payment = payment;
-    }
-    public void setSaldo(long saldo) {
-        this.saldo = saldo;
-    }
-
-    /* Method default */
-    public DepeFoodPaymentSystem getPaymentSystem() {
-        return payment;
+        orderHistory = new ArrayList<>();
     }
     public String getEmail() {
         return email;
@@ -67,9 +36,6 @@ public class User {
     }
     public ArrayList<Order> getOrderHistory() {
         return orderHistory;
-    }
-    public long getSaldo() {
-        return saldo;
     }
     public boolean isOrderBelongsToUser(String orderId) {
         for (Order order : orderHistory) {

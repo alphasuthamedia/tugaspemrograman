@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import assignments.assignment1.OrderGenerator;
-import assignments.assignment3.payment.*;
 
 public class MainMenu {
     private static final Scanner input = new Scanner(System.in);
@@ -118,7 +117,7 @@ public class MainMenu {
                 continue;
             };
             Order order = new Order(
-                    OrderGenerator.generateOrderID(restaurantName.toUpperCase(), tanggalPemesanan, userLoggedIn.getNomorTelepon()),
+                    OrderGenerator.generateOrderID(restaurantName, tanggalPemesanan, userLoggedIn.getNomorTelepon()),
                     tanggalPemesanan, 
                     OrderGenerator.calculateDeliveryCost(userLoggedIn.getLokasi()), 
                     restaurant, 
@@ -252,10 +251,10 @@ public class MainMenu {
             String newStatus = input.nextLine().trim();
             if(newStatus.toLowerCase().equals("SELESAI".toLowerCase())){
                 if(order.getOrderFinished() == true){
-                    System.out.printf("Status pesanan dengan ID %s tidak berhasil diupdate!", order.getOrderId().toUpperCase());
+                    System.out.printf("Status pesanan dengan ID %s tidak berhasil diupdate!", order.getOrderId());
                 }
                 else{
-                    System.out.printf("Status pesanan dengan ID %s berhasil diupdate!", order.getOrderId().toUpperCase());
+                    System.out.printf("Status pesanan dengan ID %s berhasil diupdate!", order.getOrderId());
                     order.setOrderFinished(true);
                 }
             }
