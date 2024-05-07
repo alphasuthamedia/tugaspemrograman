@@ -126,4 +126,5 @@ public class MainMenu {
         userList.add(
                 new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
     }
+    
 }
