@@ -53,10 +53,6 @@ public class OrderGenerator {
         String id = restaurantCode + formattedDate + phoneNumberChecksum;
         id = id.toUpperCase();
         String checksum = calculateChecksum(id);
-<<<<<<< HEAD
-=======
-
->>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
         return id + checksum;
     }
 
@@ -72,10 +68,6 @@ public class OrderGenerator {
      * Biaya Ongkos Kirim: [Total Ongkos Kirim]
      */
     public static String generateBill(String OrderID, String lokasi) {
-<<<<<<< HEAD
-        lokasi = lokasi.toUpperCase();
-=======
->>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
         String formattedDate = OrderID.substring(4, 12);
         String tanggalPemesanan = formattedDate.substring(0, 2) + "/" + formattedDate.substring(2, 4) + "/"
                 + formattedDate.substring(4, 8);

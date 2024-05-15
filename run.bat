@@ -1,0 +1,1 @@
+gradlew.bat -- clean & gradlew.bat :assignment4:run --console plain

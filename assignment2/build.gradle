@@ -6,12 +6,4 @@ application {
 }
 run {
     standardInput = System.in
-<<<<<<< HEAD
-}
-
-dependencies {
-    implementation project(":assignment1");
-    implementation project(":assignment3");
-=======
->>>>>>> 2de87934941926ea08452f88727b4221a5edf9d5
 }
