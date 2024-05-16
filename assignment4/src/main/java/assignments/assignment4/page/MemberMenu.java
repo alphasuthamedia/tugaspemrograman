@@ -20,9 +20,6 @@ public abstract class MemberMenu {
         return this.scene;
     }
 
-    public void refresh(){
-        //TODO: Implemenetasi method ini untuk merefresh data yang dimiliki aplikasi
-        // Hint: Method ini digunakan pada *seluruh method* yang membutuhkan update
-    }
+    abstract public void refresh(); // Abstract method to refresh the scene
 
 }

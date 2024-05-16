@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-public class CustomerMenu extends MemberMenu{
+//extends MemberMenu
+public class CustomerMenu  {
     private Stage stage;
     private Scene scene;
     private Scene addOrderScene;
@@ -47,7 +47,7 @@ public class CustomerMenu extends MemberMenu{
         this.cekSaldoScene = createCekSaldoScene();
     }
 
-    @Override
+    // @Override
     public Scene createBaseMenu() {
         // TODO: Implementasikan method ini untuk menampilkan menu untuk Customer
         VBox menuLayout = new VBox(10);
