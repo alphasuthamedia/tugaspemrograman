@@ -14,7 +14,6 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import assignments.assignment4.MainApp;
@@ -44,7 +43,8 @@ public class LoginForm extends MemberMenu {
         /* Section userInput */
         // namelabel dan nameInput
         nameInput = new TextField();
-        nameInput.setStyle("-fx-font-size: 20px; -fx-font-family: 'Source Sans Pro Regular'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0");
+        // nameInput.setStyle("-fx-font-size: 20px; -fx-font-family: 'Source Sans Pro Regular'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0");
+        nameInput.setStyle("-fx-font-size: 20px; -fx-font-family: 'Source Sans Pro Regular'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
 
         Text placeholderNameInput = new Text("Enter your name");
         placeholderNameInput.setFill(Color.GRAY);
@@ -104,17 +104,18 @@ public class LoginForm extends MemberMenu {
     private void handleLogin() {
         DepeFood.initUser(); // Initialize users
         User user = DepeFood.getUser(nameInput.getText(), phoneInput.getText());
-        mainApp.setScene(new AdminMenu(stage, mainApp, user).createBaseMenu());
-        // if (user == null) {
-        //     showAlert("Login Failed", null, "User not found!", Alert.AlertType.ERROR);
-        // } else {
-        //     mainApp.setUser(user);
-        //     if ((user.getRole().equals("Admin"))) {
-        //         mainApp.setScene(new AdminMenu(stage, mainApp, user).createBaseMenu());
-        //     } else {
-        //         mainApp.setScene(new CustomerMenu(stage, mainApp, user).createBaseMenu());
-        //     }
-        // }
+        // mainApp.setScene(new AdminMenu(stage, mainApp, user).createBaseMenu());
+        // mainApp.setScene(new CustomerMenu(stage, mainApp, user).createBaseMenu());
+        if (user == null) {
+            showAlert("Login Failed", null, "User not found!", Alert.AlertType.ERROR);
+        } else {
+            mainApp.setUser(user);
+            if ((user.getRole().equals("Admin"))) {
+                mainApp.setScene(new AdminMenu(stage, mainApp, user).createBaseMenu());
+            } else if (user.getRole().equals("Customer")) {
+                mainApp.setScene(new CustomerMenu(stage, mainApp, user).createBaseMenu());
+            }
+        }
     }
 
     public Scene getScene(){

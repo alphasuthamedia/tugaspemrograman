@@ -45,8 +45,6 @@ public class AdminMenu extends MemberMenu {
 
     private TextField restaurantMenuNameInput;
     private TextField restaurantMenuPriceInput;
-    
-
     ComboBox<String> restaurantComboBoxView = new ComboBox<>();
 
     public AdminMenu(Stage stage, MainApp mainApp, User user) {
@@ -264,7 +262,6 @@ public class AdminMenu extends MemberMenu {
         return new Scene(layout, 400, 600);
     }
     
-
     private void handleTambahRestoran(String nama) {    
         String validName = DepeFood.getValidRestaurantName(nama);
         if (validName.equals(nama)) {
