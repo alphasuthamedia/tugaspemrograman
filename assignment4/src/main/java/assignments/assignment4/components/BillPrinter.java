@@ -72,7 +72,8 @@ public class BillPrinter {
         printBillButton.setMaxWidth(400);
         printBillButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
         printBillButton.setOnAction(e -> {
-            this.printBill(orderIDInput.getText());
+            // handle strip
+            this.printBill(orderIDInput.getText().strip());
         });
 
         // Button back

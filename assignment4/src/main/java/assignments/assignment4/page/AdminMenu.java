@@ -135,7 +135,8 @@ public class AdminMenu extends MemberMenu {
         submitButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
         submitButton.setMaxWidth(380);
         submitButton.setOnAction(e -> {
-            if (handleTambahRestoran(restaurantNameInput.getText()) == 1) {
+            // handle strip
+            if (handleTambahRestoran(restaurantNameInput.getText().strip()) == 1) {
                 restaurantNameInput.clear();
             }
         });
@@ -254,12 +255,14 @@ public class AdminMenu extends MemberMenu {
             if (restaurantComboBox.getValue() == null) {
                 showAlert("Error", "Menu gagal ditambahkan", "Anda belum memilih restoran", Alert.AlertType.ERROR);
             } else {
-                if (restaurantMenuNameInput.getText().length() < 4){
+                // handle strip
+                if (restaurantMenuNameInput.getText().strip().length() < 4){
                     showAlert("Error", "Menu gagal ditambahkan", "Nama menu harus lebih dari 4 karakter", Alert.AlertType.ERROR);
                     } else {
                         try {
-                            Double.parseDouble(restaurantMenuPriceInput.getText());
-                            handleTambahMenuRestoran(restaurantComboBox.getValue(), restaurantMenuNameInput.getText(), Double.parseDouble(restaurantMenuPriceInput.getText()));
+                            // handle endspace dan firstspace dengna strip
+                            Double.parseDouble(restaurantMenuPriceInput.getText().strip());
+                            handleTambahMenuRestoran(restaurantComboBox.getValue(), restaurantMenuNameInput.getText().strip(), Double.parseDouble(restaurantMenuPriceInput.getText().strip()));
                             restaurantMenuNameInput.clear();
                             restaurantMenuPriceInput.clear();
                         } catch (NumberFormatException ex) {

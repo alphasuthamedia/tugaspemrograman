@@ -114,7 +114,7 @@ public class LoginForm extends MemberMenu {
 
     private void handleLogin() {
         DepeFood.initUser(); // Initialize users
-        User user = DepeFood.getUser(nameInput.getText(), phoneInput.getText());
+        User user = DepeFood.getUser(nameInput.getText().strip(), phoneInput.getText().strip()); // jangan lupa di strip
         // mainApp.setScene(new AdminMenu(stage, mainApp, user).createBaseMenu());
         // mainApp.setScene(new CustomerMenu(stage, mainApp, user).createBaseMenu());
         if (user == null) {

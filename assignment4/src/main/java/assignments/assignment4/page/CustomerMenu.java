@@ -188,14 +188,15 @@ public class CustomerMenu extends MemberMenu {
             if (tanggalPemesananInput.getText().isEmpty()) {
                 showAlert("Error", null, "Tanggal pemesanan tidak boleh kosong", AlertType.ERROR);
                 return;
-            } else if (!tanggalPemesananInput.getText().matches("^\\d{2}/\\d{2}/\\d{4}$")) {
+            } else if (!tanggalPemesananInput.getText().strip().matches("^\\d{2}/\\d{2}/\\d{4}$")) {
                 showAlert("Error", null, "Format tanggal pemesanan salah (DD/MM/YYYY)", AlertType.ERROR);
                 return;
             }
             if (menuItemsListView.getItems().isEmpty()){
                 return;
             }
-            handleBuatPesanan(restaurantComboBox.getValue(), tanggalPemesananInput.getText(), getNamaMenuSelected());
+            // handle strip
+            handleBuatPesanan(restaurantComboBox.getValue(), tanggalPemesananInput.getText().strip(), getNamaMenuSelected());
         });
 
         // Button back
@@ -263,9 +264,11 @@ public class CustomerMenu extends MemberMenu {
                 return;
             } else {
                 if (pilihOpsiPembayaranComboBox.getValue().equals("Credit Card")) {
-                    handleBayarBill(orderIDInput.getText(), 1);
+                    // handle strip
+                    handleBayarBill(orderIDInput.getText().strip(), 1);
                 } else {
-                    handleBayarBill(orderIDInput.getText(), 2);
+                    // handle strip
+                    handleBayarBill(orderIDInput.getText().strip(), 2);
                 }
             }
         });
