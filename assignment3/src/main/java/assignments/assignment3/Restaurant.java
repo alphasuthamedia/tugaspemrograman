@@ -26,7 +26,7 @@ public class Restaurant {
         return menu;
     }
 
-    private ArrayList<Menu> sortMenu() {
+    public ArrayList<Menu> sortMenu() {
         Menu[] menuArr = new Menu[menu.size()];
         for (int i = 0; i < menu.size(); i++) {
             menuArr[i] = menu.get(i);

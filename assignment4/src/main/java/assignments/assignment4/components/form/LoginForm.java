@@ -40,13 +40,12 @@ public class LoginForm extends MemberMenu {
     private Scene createLoginForm() {
         // Label welcome to DepeFood
         Label welcomeLabel = new Label("Welcome to DepeFood");
-        welcomeLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-padding: 20px 0 20px 0;");
+        welcomeLabel.setStyle("-fx-font-size: 40px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-padding: 20px 0 20px 0;");
         
-        // image DepeFood
+        // // image DepeFood
         ImageView img = new ImageView();
         img.setStyle("-fx-background-color: transparent");
-        img.setImage(new Image("https://raw.githubusercontent.com/alphasuthamedia/tugaspemrograman/master/assignment4/src/DepeFood.png?token=GHSAT0AAAAAACRRYHF5KAF5XDSMYA5TMK4IZSIIYIQ"));
-
+        img.setImage(new Image("https://cdn.discordapp.com/attachments/601541144442175509/1241295045391290479/DepeFood2.png?ex=6649ad98&is=66485c18&hm=86e28161d202a3cb5cfa6cd680a8f37e5c1d4855c7e0f305d2a4ba2914eed20a&")); // saya ga punya banyak duit bang hehe!
 
         /* Section userInput */
         // namelabel dan nameInput
@@ -99,13 +98,13 @@ public class LoginForm extends MemberMenu {
         loginButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
         loginButton.setMaxWidth(300);
         loginButton.setOnAction(e -> {
+            handleLogin();
             nameInput.clear(); // Clear nameInput after login
             phoneInput.clear(); // Clear nameInput after login
-            handleLogin();
         });
 
         // complete structure
-        VBox mainLayout = new VBox(30, welcomeLabel, img, userInputSection, loginButton);
+        VBox mainLayout = new VBox(70, welcomeLabel, img, userInputSection, loginButton);
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
         
