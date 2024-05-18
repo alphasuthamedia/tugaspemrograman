@@ -45,7 +45,7 @@ public class LoginForm extends MemberMenu {
         // image DepeFood
         ImageView img = new ImageView();
         img.setStyle("-fx-background-color: transparent");
-        img.setImage(new Image("DepeFood.png"));
+        img.setImage(new Image("https://raw.githubusercontent.com/alphasuthamedia/tugaspemrograman/master/assignment4/src/DepeFood.png?token=GHSAT0AAAAAACRRYHF5KAF5XDSMYA5TMK4IZSIIYIQ"));
 
 
         /* Section userInput */
@@ -105,7 +105,7 @@ public class LoginForm extends MemberMenu {
         });
 
         // complete structure
-        VBox mainLayout = new VBox(70, welcomeLabel, img, userInputSection, loginButton);
+        VBox mainLayout = new VBox(30, welcomeLabel, img, userInputSection, loginButton);
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
         
