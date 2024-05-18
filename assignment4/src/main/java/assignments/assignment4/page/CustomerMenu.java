@@ -51,8 +51,10 @@ public class CustomerMenu extends MemberMenu {
     private List<Restaurant> restoList = new ArrayList<>();
     private User user;
 
-    public CustomerMenu(Stage stage, MainApp mainApp, User user) {
+    Label balanceLabel = new Label("");
 
+    public CustomerMenu(Stage stage, MainApp mainApp, User user) {
+        balanceLabel = new Label(""+user.getSaldo());
         restoList = DepeFood.getRestoList();
         refresh();
         menuItemsListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -70,56 +72,72 @@ public class CustomerMenu extends MemberMenu {
 
     // @Override
     public Scene createBaseMenu() {
+        // Label Halo user
+        Label haloUserLabel = new Label("Halo, " + user.getNama());
+        haloUserLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
+        
         /* Just Button */
+        // Label setAksi
+        Label setAksiLabel = new Label("  Silahkan pilih aksi yang ingin dilakukan");
+        setAksiLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
+
         // Button Buat Pesanan
         Button handleBuatPesananButton = new Button("Buat Pesanan");
         handleBuatPesananButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
-        handleBuatPesananButton.setMaxWidth(300);
+        handleBuatPesananButton.setMaxWidth(380);
         handleBuatPesananButton.setOnAction(e -> {
             stage.setScene(this.addOrderScene);
         });
         // Button Cetak Bill
         Button handleCetakBillButton = new Button("Cetak Bill");
         handleCetakBillButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
-        handleCetakBillButton.setMaxWidth(300);
+        handleCetakBillButton.setMaxWidth(380);
         handleCetakBillButton.setOnAction(e -> {
             stage.setScene(this.printBillScene);
         });
         // Button Bayar Bill
         Button handleBayarBillButton = new Button("Bayar Bill");
         handleBayarBillButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
-        handleBayarBillButton.setMaxWidth(300);
+        handleBayarBillButton.setMaxWidth(380);
         handleBayarBillButton.setOnAction(e -> {
             stage.setScene(this.payBillScene);
         });
         // Button Cek Saldo
         Button handleCekSaldoButton = new Button("Cek Saldo");
         handleCekSaldoButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
-        handleCekSaldoButton.setMaxWidth(300);
+        handleCekSaldoButton.setMaxWidth(380);
         handleCekSaldoButton.setOnAction(e -> {
+            balanceLabel.setText(""+user.getSaldo());
+            System.out.println(user.getSaldo());
             stage.setScene(this.cekSaldoScene);
         });
         // Button sign out
         Button signOutButton = new Button("Log Out");
         signOutButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
-        signOutButton.setMaxWidth(300);
+        signOutButton.setMaxWidth(380);
         signOutButton.setOnAction(e -> {
             mainApp.logout(); // back to login
         });
+        // satuin button
+        VBox buttonLayout = new VBox(30);
+        buttonLayout.getChildren().addAll(handleBuatPesananButton, handleCetakBillButton, handleBayarBillButton, handleCekSaldoButton, signOutButton);
+        buttonLayout.setAlignment(Pos.CENTER);
+        VBox buttonLayoutandLabel = new VBox(20);
+        buttonLayoutandLabel.getChildren().addAll(setAksiLabel, buttonLayout);
         /* Button end */
 
-        VBox menuLayout = new VBox(50);
-        menuLayout.getChildren().addAll(handleBuatPesananButton, handleCetakBillButton, handleBayarBillButton, handleCekSaldoButton, signOutButton);
+        VBox menuLayout = new VBox(200);
+        menuLayout.getChildren().addAll(haloUserLabel, buttonLayoutandLabel);
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        return new Scene(menuLayout, 400, 600);
+        return new Scene(menuLayout, 480, 854);
     }
 
     private Scene createTambahPesananForm() {
         // Label Buat Pesanan
         Label buatPesananLabel = new Label("Buat Pesanan");
-        buatPesananLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
+        buatPesananLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
 
         // Label Restaurant
         Label restaurantLabel = new Label("Select Restaurant :");
@@ -171,7 +189,10 @@ public class CustomerMenu extends MemberMenu {
                 showAlert("Error", null, "Tanggal pemesanan tidak boleh kosong", AlertType.ERROR);
                 return;
             } else if (!tanggalPemesananInput.getText().matches("^\\d{2}/\\d{2}/\\d{4}$")) {
-                showAlert("Error", null, "Format tanggal pemesanan salah", AlertType.ERROR);
+                showAlert("Error", null, "Format tanggal pemesanan salah (DD/MM/YYYY)", AlertType.ERROR);
+                return;
+            }
+            if (menuItemsListView.getItems().isEmpty()){
                 return;
             }
             handleBuatPesanan(restaurantComboBox.getValue(), tanggalPemesananInput.getText(), getNamaMenuSelected());
@@ -182,6 +203,9 @@ public class CustomerMenu extends MemberMenu {
         backButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
         backButton.setMaxWidth(300);
         backButton.setOnAction(e -> {
+            restaurantComboBox.setValue(null); // Clear the restaurantComboBox
+            tanggalPemesananInput.clear(); // Clear the tanggalPemesananInput
+            menuItemsListView.getItems().clear(); // Clear the menuItemsListView
             stage.setScene(this.scene); // back to main menu for admin
         });
 
@@ -190,7 +214,7 @@ public class CustomerMenu extends MemberMenu {
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        return new Scene(menuLayout, 400, 600);
+        return new Scene(menuLayout, 480, 854);
     }
 
     private Scene createBillPrinter(){
@@ -229,36 +253,73 @@ public class CustomerMenu extends MemberMenu {
         // Button Bayar Bill
         Button bayarBillButton = new Button("Bayar");
         bayarBillButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
-        bayarBillButton.setMaxWidth(300);
+        bayarBillButton.setMaxWidth(380);
         bayarBillButton.setOnAction(e -> {
-            verifyBayar(orderIDInput.getText(), pilihOpsiPembayaranComboBox.getValue())     ;
+            if ((pilihOpsiPembayaranComboBox.getValue() == null) && (orderIDInput.getText().isEmpty())) {
+                showAlert("Error", null, "Order ID belum dimasukkan", AlertType.ERROR);
+                return;
+            } else if (pilihOpsiPembayaranComboBox.getValue() == null) {
+                showAlert("Error", null, "Anda belum memilih opsi pembayaran", AlertType.ERROR);
+                return;
+            } else {
+                if (pilihOpsiPembayaranComboBox.getValue().equals("Credit Card")) {
+                    handleBayarBill(orderIDInput.getText(), 1);
+                } else {
+                    handleBayarBill(orderIDInput.getText(), 2);
+                }
+            }
         });
 
         // Button Back Button
         Button backButton = new Button("Kembali");
         backButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
-        backButton.setMaxWidth(300);
+        backButton.setMaxWidth(380);
         backButton.setOnAction(e -> {
+            orderIDInput.clear(); // Clear the orderIDInput
+            pilihOpsiPembayaranComboBox.setValue(null); // Clear the pilihOpsiPembayaranComboBox
             stage.setScene(this.scene); // back to main menu for admin
         });
 
-    
-        VBox menuLayout = new VBox(10);
-        menuLayout.getChildren().addAll(masukkanStrukLabel, orderIDLabel, stackOrderIDInput, pilihOpsiPembayaranComboBox, bayarBillButton, backButton);
+        // VBox untuk menyatukan ID dan selection pembayaran
+        VBox masukkanID = new VBox(10);
+        masukkanID.getChildren().addAll(orderIDLabel, stackOrderIDInput, pilihOpsiPembayaranComboBox);
+        masukkanID.setAlignment(Pos.CENTER);
+
+        // VBox untuk menyatukan button
+        VBox menuButtonLayout = new VBox(10);
+        menuButtonLayout.getChildren().addAll(bayarBillButton,backButton);
+        menuButtonLayout.setAlignment(Pos.CENTER);
+
+        VBox menuLayout = new VBox(170);
+        menuLayout.getChildren().addAll(masukkanStrukLabel,masukkanID, menuButtonLayout);
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
 
 
-        return new Scene(menuLayout, 400,600);
+        return new Scene(menuLayout, 480,854);
     }
 
 
     private Scene createCekSaldoScene() {
+        // Label Cek Saldo
+        Label cekSaldoLabel = new Label("Cek Saldo");
+        cekSaldoLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
+        cekSaldoLabel.setAlignment(Pos.CENTER);
+
+        // Label your balance
+        Label yourBalanceLabel = new Label("Saldo Anda : ");
+        yourBalanceLabel.setStyle("-fx-font-size: 36px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
+        yourBalanceLabel.setAlignment(Pos.CENTER);
+
         // Label for showing the balance
-        Label balanceLabel = new Label("Your Balance\n" + "\nRp" + user.getSaldo());
         balanceLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-alignment: center;");
         balanceLabel.setAlignment(Pos.CENTER);
     
+        // VBox for the balance
+        VBox balanceLayout = new VBox(10);
+        balanceLayout.getChildren().addAll(yourBalanceLabel, balanceLabel);
+        balanceLayout.setAlignment(Pos.CENTER);
+
         // Back button to return to the main menu
         Button backButton = new Button("Back");
         backButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
@@ -268,36 +329,69 @@ public class CustomerMenu extends MemberMenu {
         });
     
         // Layout for the scene
-        VBox menuLayout = new VBox(50);
-        menuLayout.getChildren().addAll(balanceLabel, backButton);
+        VBox menuLayout = new VBox(250);
+        menuLayout.getChildren().addAll(cekSaldoLabel, balanceLayout, backButton);
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
     
-        return new Scene(menuLayout, 400, 600);
+        return new Scene(menuLayout, 480, 854);
     }
     
 
     private void handleBuatPesanan(String namaRestoran, String tanggalPemesanan, List<String> menuItems) {
         List<String> tempMenuItems = new ArrayList<>();
+        List<String> hasilMenuItems = new ArrayList<>();
         for (String menu : menuItems) {
-            tempMenuItems.add(menu.split(" - ")[0]);
+            // Menghapus nomor urut di awal dan memisahkan nama menu dari harga
+            String cleanedMenu = menu.replaceAll("^\\d+\\.\\s*", ""); // Menghapus angka dan titik di awal
+            cleanedMenu = (cleanedMenu.split(" - Rp")[0].trim());
+            hasilMenuItems.add(cleanedMenu);
         }
 
         try {
-            String orderID = DepeFood.handleBuatPesanan(user, namaRestoran, tanggalPemesanan, 1, tempMenuItems);
+            String orderID = DepeFood.handleBuatPesanan(user, namaRestoran, tanggalPemesanan, 1, hasilMenuItems);
             showAlert("Success", null, "Order dengan ID " + orderID + " berhasil ditambahkan", AlertType.INFORMATION);
         } catch (Exception e) {
-            System.out.println("SOMETHING SKECTHY");
+            System.out.println("SOMETHING SKECTHY"); // shouldnt be executed
         }
     }
 
     private void handleBayarBill(String orderID, int pilihanPembayaran) {
-        //TODO: Implementasi validasi pembayaran
-        try {
-
-        } catch (Exception e) {
-
+        Order order = DepeFood.getOrderOrNull(orderID);
+        if (order == null) {
+            showAlert("Error", null, "Order ID tidak ditemukan", Alert.AlertType.ERROR);
+            return;
         }
+    
+        if (order.getOrderFinished()) {
+            showAlert("Error", null, "Pesanan dengan ID ini sudah lunas", Alert.AlertType.ERROR);
+            return;
+        }
+    
+        DepeFoodPaymentSystem paymentSystem = user.getPaymentSystem();
+        boolean isCreditCard = paymentSystem instanceof CreditCardPayment;
+        long amountToPay = (long) order.getTotalHarga();
+        long tax = 0;
+    
+        if (isCreditCard && pilihanPembayaran == 1) {
+            tax = (long) (amountToPay * 0.02);
+            amountToPay += tax;
+        } else if (!isCreditCard && pilihanPembayaran == 2) {
+            // No tax for Debit
+        } else {
+            showAlert("Error", null, "Terjadi kesalahan saat memproses pembayaran", Alert.AlertType.ERROR);
+            return;
+        }
+        System.out.println(amountToPay);
+        if (user.getSaldo() < amountToPay) {
+            showAlert("Error", null, "Saldo tidak mencukupi", Alert.AlertType.ERROR);
+            return;
+        }
+    
+        user.setSaldo(user.getSaldo() - amountToPay);
+        System.out.println(user.getSaldo());
+        DepeFood.handleUpdateStatusPesanan(order);
+        showAlert("Success", null, "Pembayaran berhasil dilakukan", Alert.AlertType.INFORMATION);
     }
 
     @Override
@@ -328,24 +422,27 @@ public class CustomerMenu extends MemberMenu {
         Restaurant restaurant = DepeFood.getRestaurantByName(restaurantName);
         
         try {
-            restaurant.getMenu();
+            restaurant.sortMenu();
         }
         catch (NullPointerException e) {
             menuItemsListView.getItems().clear();    
             return -1; // no menu
         }
 
-        ArrayList<Menu> menu = restaurant.getMenu();
+        ArrayList<Menu> menu = restaurant.sortMenu();
         if (menu.size() == 0) {
             menuItemsListView.getItems().clear();
             return 0; // no menu
         }
 
         menuItemsListView.getItems().clear();
+        menuItemsListView.setStyle("-fx-font-size: 18px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+        int n = 1; // counter
         for (Menu menuItem : menu) {
             System.out.println("MENU " + menuItem.getNamaMakanan());
-            menuItemsListView.getItems().add(menuItem.getNamaMakanan() + " - " + menuItem.getHarga());
+            menuItemsListView.getItems().add((n++) + ". " + menuItem.getNamaMakanan() + " - Rp. " + menuItem.getHarga());
         }
+        n = 0; // reset counter
         return 1; // success
     }
 
@@ -353,54 +450,5 @@ public class CustomerMenu extends MemberMenu {
         ObservableList<String> selectedItems = menuItemsListView.getSelectionModel().getSelectedItems();
         System.out.println("Selected items: " + selectedItems);
         return selectedItems;
-    }
-
-    private void verifyBayar(String orderID, String paymentOption) {
-        Order order = DepeFood.getOrderOrNull(orderID);
-        if (order == null) {
-            showAlert("Error", null, "Order ID tidak ditemukan", Alert.AlertType.ERROR);
-            return;
-        }
-
-        if (order.getOrderFinished()) {
-            showAlert("Error", null, "Pesanan dengan ID ini sudah lunas", Alert.AlertType.ERROR);
-            return;
-        }
-
-        DepeFoodPaymentSystem paymentSystem = user.getPaymentSystem();
-        boolean isCreditCard = paymentSystem instanceof CreditCardPayment;
-        long amountToPay = (long) order.getTotalHarga();
-        long tax = 0;
-
-        if (isCreditCard && !(paymentOption == "Debit")) {
-            tax = (long) (amountToPay * 0.02);
-            amountToPay += tax;
-
-            user.setSaldo(user.getSaldo() - amountToPay);
-            Restaurant restaurant = order.getRestaurant();
-
-            DepeFood.handleUpdateStatusPesanan(order);
-
-            showAlert("Success", null, "Pembayaran berhasil dilakukan", Alert.AlertType.INFORMATION);
-
-        } else if (!(isCreditCard) && (paymentOption == "Debit")) {
-
-            user.setSaldo(user.getSaldo() - amountToPay);
-            Restaurant restaurant = order.getRestaurant();
-
-            DepeFood.handleUpdateStatusPesanan(order);
-
-            showAlert("Success", null, "Pembayaran berhasil dilakukan", Alert.AlertType.INFORMATION);
-
-        } else {
-            showAlert("Error", null, "Terjadi kesalahan saat memproses pembayaran", Alert.AlertType.ERROR);
-        }
-
-        if (user.getSaldo() < amountToPay) {
-            showAlert("Error", null, "Saldo tidak mencukupi", Alert.AlertType.ERROR);
-            return;
-        }
-
-        
     }
 }

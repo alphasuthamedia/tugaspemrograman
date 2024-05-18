@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import org.w3c.dom.UserDataHandler;
-
 import assignments.assignment1.OrderGenerator;
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
@@ -48,13 +46,6 @@ public class DepeFood {
         userList.add(new User("Admin", "123456789", "admin@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
         userList.add(
                 new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
-        
-                userList.add(
-                new User("c", "1", "dwadadsb@gmail.com", "B", "Customer", new CreditCardPayment(), 100000000));
-    
-                userList.add(
-                new User("a", "1", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
-    
             }
 
     public static User getUser(String nama, String nomorTelepon) {

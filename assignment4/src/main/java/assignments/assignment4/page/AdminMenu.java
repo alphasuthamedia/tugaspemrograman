@@ -238,7 +238,7 @@ public class AdminMenu extends MemberMenu {
         // Button back
         Button backButton = new Button("Kembali");
         backButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
-        backButton.setMaxWidth(300);
+        backButton.setMaxWidth(380);
         backButton.setOnAction(e -> {
             restaurantMenuNameInput.clear();
             restaurantMenuPriceInput.clear();
@@ -249,7 +249,7 @@ public class AdminMenu extends MemberMenu {
         // Button Add Menu Item
         Button addMenuButton = new Button("Add Menu Item");
         addMenuButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
-        addMenuButton.setMaxWidth(300);
+        addMenuButton.setMaxWidth(380);
         addMenuButton.setOnAction(e -> {
             if (restaurantComboBox.getValue() == null) {
                 showAlert("Error", "Menu gagal ditambahkan", "Anda belum memilih restoran", Alert.AlertType.ERROR);
@@ -418,7 +418,6 @@ public class AdminMenu extends MemberMenu {
         int n = 1;
         menuItemsListView.setStyle("-fx-font-size: 18px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
         for (Menu menuItem : menu) {
-            System.out.println("MENU " + menuItem.getNamaMakanan());
             menuItemsListView.getItems().add((n++) + ". " + menuItem.getNamaMakanan() + " - Rp. " + menuItem.getHarga());
         }
         n = 1;

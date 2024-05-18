@@ -60,7 +60,7 @@ public class LoginForm extends MemberMenu {
 
         StackPane stackNameInput = new StackPane();
         stackNameInput.getChildren().addAll(nameInput, placeholderNameInput);
-        stackNameInput.setMaxWidth(380);
+        stackNameInput.setMaxWidth(400);
         StackPane.setAlignment(placeholderNameInput, Pos.CENTER_LEFT);
         StackPane.setMargin(placeholderNameInput, new Insets(0, 0, 0, 20)); // Left padding
 
@@ -79,7 +79,7 @@ public class LoginForm extends MemberMenu {
 
         StackPane stackPhoneNumberInput = new StackPane();
         stackPhoneNumberInput.getChildren().addAll(phoneInput, placeholderPhoneNumberInput);
-        stackPhoneNumberInput.setMaxWidth(380);
+        stackPhoneNumberInput.setMaxWidth(400);
         StackPane.setAlignment(placeholderPhoneNumberInput, Pos.CENTER_LEFT);
         StackPane.setMargin(placeholderPhoneNumberInput, new Insets(0, 0, 0, 20)); // Left padding
 
@@ -96,7 +96,7 @@ public class LoginForm extends MemberMenu {
         // Button login (execute handleLogin)
         Button loginButton = new Button("Sign In");
         loginButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
-        loginButton.setMaxWidth(300);
+        loginButton.setMaxWidth(400);
         loginButton.setOnAction(e -> {
             handleLogin();
             nameInput.clear(); // Clear nameInput after login

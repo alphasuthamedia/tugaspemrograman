@@ -18,6 +18,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.*;
 import assignments.assignment4.page.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.util.Stack;
 
@@ -42,7 +49,7 @@ public class BillPrinter {
     public Scene createBillPrinterForm(){
         // Label Cetak Struk
         Label cetakStrukLabel = new Label("Cetak Struk");
-        cetakStrukLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
+        cetakStrukLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
 
         // Label masukkan order ID
         Label orderIDLabel = new Label("Masukkan Order ID :");
@@ -61,6 +68,8 @@ public class BillPrinter {
 
         // Button print Bill
         Button printBillButton = new Button("Print Bill");
+        printBillButton.setMinWidth(400);
+        printBillButton.setMaxWidth(400);
         printBillButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
         printBillButton.setOnAction(e -> {
             this.printBill(orderIDInput.getText());
@@ -69,6 +78,8 @@ public class BillPrinter {
         // Button back
         Button backButton = new Button("Kembali");
         backButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
+        backButton.setMinWidth(400);
+        backButton.setMaxWidth(400);
         backButton.setOnAction(e -> {
             CustomerMenu customerMenu = new CustomerMenu(this.stage, this.mainApp, this.user);
             this.mainApp.setScene(customerMenu.createBaseMenu());
@@ -79,45 +90,66 @@ public class BillPrinter {
         buttonLayout.getChildren().addAll(printBillButton, backButton);
         buttonLayout.setAlignment(Pos.CENTER);
 
-        VBox layout = new VBox(120);
+        VBox layout = new VBox(275);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(cetakStrukLabel, orderIDLayout, buttonLayout);
         layout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
        
-        return new Scene(layout, 400, 600);
+        return new Scene(layout, 480, 854);
     }
 
     private void printBill(String orderId) {
         Order order = DepeFood.findUserOrderById(this.user, orderId);
         if (order != null) {
-            VBox billLayout = new VBox(10);
+            VBox billLayout = new VBox(50);
 
-            Label billLabel = new Label("Bill");
-            billLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-padding: 20px 0 20px 0;");
+            Label billLabel = new Label("Bill : ");
+            billLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
 
             Label orderIDLabel = new Label("Order ID: " + order.getOrderId());
+            orderIDLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+
             Label dateLabel = new Label("Tanggal Pemesanan: " + order.getTanggal());
+            dateLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+
             Label restaurantLabel = new Label("Restaurant: " + order.getRestaurant().getNama());
+            restaurantLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+
             Label deliveryLocationLabel = new Label("Lokasi Pengiriman: " + this.user.getLokasi());
+            deliveryLocationLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+
             Label deliveryStatusLabel = new Label("Status Pengiriman: " + (order.getOrderFinished() ? "Finished" : "Not Finished"));
+            deliveryStatusLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
 
             VBox menuItemsLayout = new VBox(5);
             menuItemsLayout.getChildren().add(new Label("Pesanan:"));
+            menuItemsLayout.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+
             for (Menu menuItem : order.getSortedMenu()) {
-                menuItemsLayout.getChildren().add(new Label("- " + menuItem.getNamaMakanan() + " Rp " + menuItem.getHarga()));
+                Label formattedMenuItem = new Label("- " + menuItem.getNamaMakanan() + " Rp " + menuItem.getHarga());
+                formattedMenuItem.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+                menuItemsLayout.getChildren().add(formattedMenuItem);
             }
 
             VBox menuItems = new VBox();
-            menuItems.getChildren().addAll(orderIDLabel, dateLabel, restaurantLabel, deliveryLocationLabel, deliveryStatusLabel, menuItemsLayout);
+            menuItems.setPadding(new Insets(10));
 
             StackPane stackMenuItems = new StackPane();
             stackMenuItems.getChildren().add(menuItems);
-            stackMenuItems.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            stackMenuItems.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(15), Insets.EMPTY)));
 
             Label deliveryCostLabel = new Label("Biaya Ongkos Kirim: Rp " + order.getOngkir());
+            deliveryCostLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+
             Label totalCostLabel = new Label("Total Biaya: Rp " + order.getTotalHarga());
+            totalCostLabel.setStyle("-fx-font-size: 24px; -fx-padding: 10px; -fx-background-radius: 5px; -fx-border-radius: 5px;");
+            
+            // satukan di menuitems
+            menuItems.getChildren().addAll(orderIDLabel, dateLabel, restaurantLabel, deliveryLocationLabel, deliveryStatusLabel, menuItemsLayout, deliveryCostLabel, totalCostLabel);
 
             Button backButton = new Button("Kembali");
+            backButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
+            backButton.setMaxWidth(380); 
             backButton.setOnAction(e -> {
                 stage.setScene(this.getScene());
             });
@@ -127,7 +159,7 @@ public class BillPrinter {
             billLayout.setPadding(new Insets(20));
             billLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            Scene billScene = new Scene(billLayout, 400, 600);
+            Scene billScene = new Scene(billLayout, 480, 854);
             stage.setScene(billScene);
         } else {
             MemberMenu.showAlert("Error", "Order ID tidak ditemukan", "Silakan masukkan Order ID yang valid.", Alert.AlertType.ERROR);
