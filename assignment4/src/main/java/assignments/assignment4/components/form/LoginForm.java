@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import assignments.assignment4.MainApp;
 import assignments.assignment4.page.AdminMenu;
 import assignments.assignment4.page.CustomerMenu;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 
 import assignments.assignment4.page.MemberMenu;
 
@@ -39,6 +41,12 @@ public class LoginForm extends MemberMenu {
         // Label welcome to DepeFood
         Label welcomeLabel = new Label("Welcome to DepeFood");
         welcomeLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-padding: 20px 0 20px 0;");
+        
+        // image DepeFood
+        ImageView img = new ImageView();
+        img.setStyle("-fx-background-color: transparent");
+        img.setImage(new Image("DepeFood.png"));
+
 
         /* Section userInput */
         // namelabel dan nameInput
@@ -48,6 +56,7 @@ public class LoginForm extends MemberMenu {
 
         Text placeholderNameInput = new Text("Enter your name");
         placeholderNameInput.setFill(Color.GRAY);
+        placeholderNameInput.setStyle("-fx-font-family: 'Source Sans Pro Regular'; -fx-font-size: 20px;");
         placeholderNameInput.setMouseTransparent(true);
 
         StackPane stackNameInput = new StackPane();
@@ -66,6 +75,7 @@ public class LoginForm extends MemberMenu {
 
         Text placeholderPhoneNumberInput = new Text("Enter your phone number");
         placeholderPhoneNumberInput.setFill(Color.GRAY);
+        placeholderPhoneNumberInput.setStyle("-fx-font-family: 'Source Sans Pro Regular'; -fx-font-size: 20px;");
         placeholderPhoneNumberInput.setMouseTransparent(true);
 
         StackPane stackPhoneNumberInput = new StackPane();
@@ -86,18 +96,20 @@ public class LoginForm extends MemberMenu {
 
         // Button login (execute handleLogin)
         Button loginButton = new Button("Sign In");
-        loginButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-background-color: #43464b;");
+        loginButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
         loginButton.setMaxWidth(300);
         loginButton.setOnAction(e -> {
+            nameInput.clear(); // Clear nameInput after login
+            phoneInput.clear(); // Clear nameInput after login
             handleLogin();
         });
 
         // complete structure
-        VBox mainLayout = new VBox(30, welcomeLabel, userInputSection, loginButton);
+        VBox mainLayout = new VBox(70, welcomeLabel, img, userInputSection, loginButton);
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
         
-        return new Scene(mainLayout, 400, 600);
+        return new Scene(mainLayout, 480, 854);
     }
 
 

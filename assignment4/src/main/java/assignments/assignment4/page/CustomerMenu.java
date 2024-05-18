@@ -117,16 +117,20 @@ public class CustomerMenu extends MemberMenu {
     }
 
     private Scene createTambahPesananForm() {
+        // Label Buat Pesanan
+        Label buatPesananLabel = new Label("Buat Pesanan");
+        buatPesananLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
+
         // Label Restaurant
-        Label restaurantLabel = new Label("Restaurant :");
-        restaurantLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-padding: 20px 0 20px 0;");
+        Label restaurantLabel = new Label("Select Restaurant :");
+        restaurantLabel.setStyle("-fx-font-size: 24px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
 
         // ComboBox Restaurant
         restaurantComboBox.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Regular'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
         
         // Label Tanggal Pemesanan
-        Label tanggalPemesananLabel = new Label("Date (DD/MM/YYYY):");
-        tanggalPemesananLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-padding: 20px 0 20px 0;");
+        Label tanggalPemesananLabel = new Label("Enter the date : ");
+        tanggalPemesananLabel.setStyle("-fx-font-size: 24px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
 
         // TextField Tanggal Pemesanan
         TextField tanggalPemesananInput = new TextField();
@@ -152,15 +156,25 @@ public class CustomerMenu extends MemberMenu {
 
         // Label Menu Items
         Label menuItemsLabel = new Label("Menu Items :");
-        menuItemsLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-padding: 20px 0 20px 0;");
+        menuItemsLabel.setStyle("-fx-font-size: 24px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
 
         // Button buat pesanan
         Button buatPesananButton = new Button("Buat Pesanan");
         buatPesananButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
         buatPesananButton.setMaxWidth(300);
         buatPesananButton.setOnAction(e -> {
+            if (restaurantComboBox.getValue() == null) {
+                showAlert("Error", null, "Anda belum memilih restoran", AlertType.ERROR);
+                return;
+            }
+            if (tanggalPemesananInput.getText().isEmpty()) {
+                showAlert("Error", null, "Tanggal pemesanan tidak boleh kosong", AlertType.ERROR);
+                return;
+            } else if (!tanggalPemesananInput.getText().matches("^\\d{2}/\\d{2}/\\d{4}$")) {
+                showAlert("Error", null, "Format tanggal pemesanan salah", AlertType.ERROR);
+                return;
+            }
             handleBuatPesanan(restaurantComboBox.getValue(), tanggalPemesananInput.getText(), getNamaMenuSelected());
-            // handleBuatPesanan(restaurantComboBox.getValue(), tanggalPemesananInput.getText(), menuItemsListView.getSelectionModel().getSelectedItems());
         });
 
         // Button back
@@ -172,7 +186,7 @@ public class CustomerMenu extends MemberMenu {
         });
 
         VBox menuLayout = new VBox(10);
-        menuLayout.getChildren().addAll(restaurantLabel, restaurantComboBox, tanggalPemesananLabel, stackTanggalPemesananInput, menuButton, menuItemsLabel, menuItemsListView, buatPesananButton, backButton);
+        menuLayout.getChildren().addAll(buatPesananLabel, restaurantLabel, restaurantComboBox, tanggalPemesananLabel, stackTanggalPemesananInput, menuButton, menuItemsLabel, menuItemsListView, buatPesananButton, backButton);
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
 

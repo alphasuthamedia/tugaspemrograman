@@ -41,14 +41,23 @@ public class BillPrinter {
 
     public Scene createBillPrinterForm(){
         // Label Cetak Struk
-        Label orderIDLabel = new Label("Cetak Struk");
-        orderIDLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff; -fx-padding: 20px 0 20px 0;");
+        Label cetakStrukLabel = new Label("Cetak Struk");
+        cetakStrukLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
 
+        // Label masukkan order ID
+        Label orderIDLabel = new Label("Masukkan Order ID :");
+        orderIDLabel.setStyle("-fx-font-size: 24px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #ffffff;");
+        
         // put order ID
         TextField orderIDInput = new TextField();
         // orderIDInput.setPromptText("Masukkan Order ID");
         orderIDInput.setStyle("-fx-font-size: 20px; -fx-font-family: 'Source Sans Pro Regular'; -fx-text-fill: #000000; -fx-background-color: #f0f0f0;");
         orderIDInput.setMaxWidth(380);
+
+        // vbox set masukkan order ID dan field untuk memasukkan order ID
+        VBox orderIDLayout = new VBox(10);
+        orderIDLayout.getChildren().addAll(orderIDLabel, orderIDInput);
+        orderIDLayout.setAlignment(Pos.CENTER);
 
         // Button print Bill
         Button printBillButton = new Button("Print Bill");
@@ -65,9 +74,14 @@ public class BillPrinter {
             this.mainApp.setScene(customerMenu.createBaseMenu());
         });
 
-        VBox layout = new VBox(10);
+        // VBox untuk menyatukan button
+        VBox buttonLayout = new VBox(10);
+        buttonLayout.getChildren().addAll(printBillButton, backButton);
+        buttonLayout.setAlignment(Pos.CENTER);
+
+        VBox layout = new VBox(120);
         layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(orderIDLabel, orderIDInput, printBillButton, backButton);
+        layout.getChildren().addAll(cetakStrukLabel, orderIDLayout, buttonLayout);
         layout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
        
         return new Scene(layout, 400, 600);

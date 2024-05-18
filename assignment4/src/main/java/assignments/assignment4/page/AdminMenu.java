@@ -210,7 +210,20 @@ public class AdminMenu extends MemberMenu {
         addMenuButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Source Sans Pro Semi-Bold'; -fx-text-fill: #000000; -fx-background-color: #ffffff;");
         addMenuButton.setMaxWidth(300);
         addMenuButton.setOnAction(e -> {
-            handleTambahMenuRestoran(restaurantComboBox.getValue(), restaurantMenuNameInput.getText(), Double.parseDouble(restaurantMenuPriceInput.getText()));
+            if (restaurantComboBox.getValue() == null) {
+                showAlert("Error", "Menu gagal ditambahkan", "Anda belum memilih restoran", Alert.AlertType.ERROR);
+            } else {
+                if (restaurantMenuNameInput.getText().length() < 4){
+                    showAlert("Error", "Menu gagal ditambahkan", "Nama menu harus lebih dari 4 karakter", Alert.AlertType.ERROR);
+                    } else {
+                        try {
+                            Double.parseDouble(restaurantMenuPriceInput.getText());
+                            handleTambahMenuRestoran(restaurantComboBox.getValue(), restaurantMenuNameInput.getText(), Double.parseDouble(restaurantMenuPriceInput.getText()));
+                        } catch (NumberFormatException ex) {
+                            showAlert("Error", "Menu gagal ditambahkan", "Harga menu harus lebih dari 0", Alert.AlertType.ERROR);    
+                    }
+                }
+            }
         });
         
         // gabung semua
@@ -283,12 +296,8 @@ public class AdminMenu extends MemberMenu {
 
     private void handleTambahMenuRestoran(String restaurantName, String itemName, double price) {
         Restaurant restaurant = DepeFood.getRestaurantByName(restaurantName);
-        if (restaurant != null && itemName.length() >= 4 && price > 0) {
-            DepeFood.handleTambahMenuRestoran(restaurant, itemName, price);
-            showAlert("Success", "Menu berhasil ditambahkan", "Menu " + itemName + " berhasil ditambahkan ke " + restaurantName, Alert.AlertType.INFORMATION);
-        } else {
-            showAlert("Error", "Menu gagal ditambahkan", "Invalid input values", Alert.AlertType.ERROR);
-        }
+        DepeFood.handleTambahMenuRestoran(restaurant, itemName, price);
+        showAlert("Success", "Menu berhasil ditambahkan", "Menu " + itemName + " berhasil ditambahkan ke " + restaurantName, Alert.AlertType.INFORMATION);
     }
 
     private void findMenuRestaurantOrNull(String restaurantName) {
