@@ -60,6 +60,10 @@ public class MainApp extends Application {
         setScene(getScene("Login")); // Switch to the login scene
     }
 
+    public Stage getPrimaryStage() {
+        return window;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

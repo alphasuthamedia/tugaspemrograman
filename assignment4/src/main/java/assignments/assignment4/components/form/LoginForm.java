@@ -45,7 +45,7 @@ public class LoginForm extends MemberMenu {
         // // image DepeFood
         ImageView img = new ImageView();
         img.setStyle("-fx-background-color: transparent");
-        img.setImage(new Image("https://cdn.discordapp.com/attachments/601541144442175509/1241295045391290479/DepeFood2.png?ex=6649ad98&is=66485c18&hm=86e28161d202a3cb5cfa6cd680a8f37e5c1d4855c7e0f305d2a4ba2914eed20a&")); // saya ga punya banyak duit bang hehe!
+        img.setImage(new Image("https://scontent.fcgk6-2.fna.fbcdn.net/v/t1.15752-9/438271636_2687902624705410_4859260968951181584_n.png?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeG79eIzoc62S1eQ-ETnN0ltYiFLjzpq6T9iIUuPOmrpPx3FW9Y4Rpd3a9tSpo8voZtWD3OqJLzldYiqDYN7KqTg&_nc_ohc=P1ikQMX2hgMQ7kNvgGlxyFT&_nc_ht=scontent.fcgk6-2.fna&oh=03_Q7cD1QExW4RyovLMFALymt0WTznmKJV1IjlVSILz9YHAopfFzg&oe=66719480")); // saya ga punya banyak duit bang hehe!
 
         /* Section userInput */
         // namelabel dan nameInput

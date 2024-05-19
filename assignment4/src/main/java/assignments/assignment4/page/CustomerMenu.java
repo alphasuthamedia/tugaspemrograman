@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.stream.Collectors;
+
+
 import assignments.assignment3.payment.*;
 
 import javafx.scene.*;
@@ -34,6 +36,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
+
 
 //extends MemberMenu
 public class CustomerMenu extends MemberMenu {
@@ -192,7 +200,9 @@ public class CustomerMenu extends MemberMenu {
                 showAlert("Error", null, "Format tanggal pemesanan salah (DD/MM/YYYY)", AlertType.ERROR);
                 return;
             }
-            if (menuItemsListView.getItems().isEmpty()){
+            // kalau yang dipilih kosong
+            if (menuItemsListView.getSelectionModel().getSelectedItems().size() == 0){
+                showAlert("Error", null, "Menu belum dipilih", AlertType.ERROR);
                 return;
             }
             // handle strip
@@ -337,6 +347,8 @@ public class CustomerMenu extends MemberMenu {
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
     
+        
+
         return new Scene(menuLayout, 480, 854);
     }
     
