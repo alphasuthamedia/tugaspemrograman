@@ -95,7 +95,7 @@ public class BillPrinter {
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(cetakStrukLabel, orderIDLayout, buttonLayout);
         layout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
-       
+
         return new Scene(layout, 480, 854);
     }
 
@@ -161,7 +161,16 @@ public class BillPrinter {
             billLayout.backgroundProperty().set(new Background(new BackgroundFill(Color.web("#0A9680"), CornerRadii.EMPTY, Insets.EMPTY)));
 
             Scene billScene = new Scene(billLayout, 480, 854);
-            stage.setScene(billScene);
+
+            // pane untuk automaticly menyesuaikan ukuran
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setContent(billLayout);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(true);
+
+            // set scene
+            Scene printScene = new Scene(scrollPane, 480, 854);
+            stage.setScene(printScene);
         } else {
             MemberMenu.showAlert("Error", "Order ID tidak ditemukan", "Silakan masukkan Order ID yang valid.", Alert.AlertType.ERROR);
         }
