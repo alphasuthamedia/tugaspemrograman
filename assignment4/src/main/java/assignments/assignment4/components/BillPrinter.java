@@ -167,7 +167,7 @@ public class BillPrinter {
             scrollPane.setContent(billLayout);
             scrollPane.setFitToWidth(true);
             scrollPane.setFitToHeight(true);
-
+            
             // set scene
             Scene printScene = new Scene(scrollPane, 480, 854);
             stage.setScene(printScene);
